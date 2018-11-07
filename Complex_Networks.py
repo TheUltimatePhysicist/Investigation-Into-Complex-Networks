@@ -6,7 +6,7 @@ import Regular_Network
 import Random_Network
 #import SmallWorld_Network
 
-#import Network_Analysis
+import Network_Analysis
 
 
 # Define the number of nodes.
