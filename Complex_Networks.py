@@ -5,19 +5,20 @@ import matplotlib.pyplot as plt
 import Regular_Network
 import Random_Network
 #import SmallWorld_Network
+#import ScaleFree_Network
 
 import Network_Analysis
 
 
 # Define the number of nodes.
 
-numberOfNodes = 20
+numberOfNodes = 50
 
 
 # Define the adjacency matrix.
 
 adjacencyMatrix_RegularNetwork = Regular_Network.GenerateAdjacencyMatrix(numberOfNodes)
-adjacencyMatrix_RandomNetwork = Random_Network.GenerateAdjacencyMatrix(numberOfNodes, 0.5)
+adjacencyMatrix_RandomNetwork = Random_Network.GenerateAdjacencyMatrix(numberOfNodes, 0.80)
 
 
 # Create a networkx graph.
@@ -36,3 +37,4 @@ nx.draw(G_RegularNetwork, with_labels = True, font_weight = 'bold')
 
 plt.figure("Random Network")
 nx.draw(G_RandomNetwork, with_labels = True, font_weight = 'bold')
+
