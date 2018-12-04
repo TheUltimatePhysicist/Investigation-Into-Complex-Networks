@@ -26,7 +26,7 @@ def GenerateAdjacencyMatrix(numberOfNodes, probability):
             # made or not.
             
             if i > j:
-                if randomValue >= probability:
+                if randomValue <= probability:
                     adjacencyMatrix[i, j] = 1
                     adjacencyMatrix[j, i] = 1
 
