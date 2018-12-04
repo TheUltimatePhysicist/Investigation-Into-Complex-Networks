@@ -18,7 +18,7 @@ numberOfNodes = 100
 # Define the adjacency matrix.
 
 adjacencyMatrix_RegularNetwork = Regular_Network.GenerateAdjacencyMatrix(numberOfNodes)
-adjacencyMatrix_RandomNetwork = Random_Network.GenerateAdjacencyMatrix(numberOfNodes, 0.75)
+adjacencyMatrix_RandomNetwork = Random_Network.GenerateAdjacencyMatrix(numberOfNodes, 0.50)
 
 
 # Create a networkx graph.
@@ -68,3 +68,6 @@ for i in range(0, adjacencyMatrix_RandomNetwork.shape[0]):
 
 plt.figure("Random Network Degree Distribution")
 plt.plot(degreeArray[0, :], degreeArray[1, :])
+plt.xlabel("Degree")
+plt.ylabel("Number Of Nodes")
+plt.title("Degree Distribution of Random Network (N = 100, p = 0.5)")
