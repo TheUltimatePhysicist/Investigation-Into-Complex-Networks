@@ -8,4 +8,10 @@ def GenerateAdjacencyMatrix(numberOfNodes):
     # Setting all values to 1 in the matrix implies every node is linked to
     # another node, hence the degree is equal to the number of nodes also.
     
-    return np.ones((numberOfNodes, numberOfNodes))
+    adjacencyMatrix = np.ones((numberOfNodes, numberOfNodes))
+    
+    for i in range(0, numberOfNodes):
+        adjacencyMatrix[i, i] = 0
+    
+    return adjacencyMatrix
+
