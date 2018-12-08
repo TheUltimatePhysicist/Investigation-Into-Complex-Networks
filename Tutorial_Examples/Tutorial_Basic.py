@@ -2,6 +2,7 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
+print("Hello World!")
 
 # Graph is a collection of nodes (vertices) along with
 # indentified pairs of nodes (called edges, links, etc).
