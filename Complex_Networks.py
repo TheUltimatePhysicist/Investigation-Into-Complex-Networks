@@ -32,19 +32,19 @@ G_SmallWorldNetwork = nx.from_numpy_matrix(adjacencyMatrix_SmallWorldNetwork)
 
 plt.figure("Regular Network")
 nx.draw(G_RegularNetwork, with_labels = True, font_weight = 'bold')
-
+plt.savefig("RegularNetwork.png")
 
 # PLot the random networkx graph.
 
 plt.figure("Random Network")
 nx.draw(G_RandomNetwork, with_labels = True, font_weight = 'bold')
-
+plt.show()
 
 # PLot the small world networkx graph.
 
 plt.figure("Small-World Network")
 nx.draw(G_SmallWorldNetwork, with_labels = True, font_weight = 'bold')
-
+plt.show()
 
 # Determine whether the random networks follow a Poisson distribution.
 #
@@ -73,7 +73,7 @@ node2 = 6
 #print ("Shortest path length between node ", node1, " and node ", node2, " = ", pathLength)
 
 
-"""
+
 # Print the average degrees of the networks.
 averageDegreeOfRegularNetwork = Network_Analysis.AverageDegree(adjacencyMatrix_RegularNetwork)
 averageDegreeOfRandomNetwork = Network_Analysis.AverageDegree(adjacencyMatrix_RandomNetwork)
@@ -95,6 +95,6 @@ print (" ")
 print ("Average clustering coefficient of regular network = ", clusteringCoefficientOfRegularNetwork)
 print ("Average clustering coefficient of random network = ", clusteringCoefficientOfRandomNetwork)
 print ("Average clustering coefficient of small-world network = ", clusteringCoefficientOfSmallWorldNetwork)
-"""
+
 
 

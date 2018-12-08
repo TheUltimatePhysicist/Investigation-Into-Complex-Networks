@@ -35,3 +35,4 @@ G = nx.from_numpy_matrix(adjacencyMatrix)
 
 plt.figure()
 nx.draw(G, with_labels = True, font_weight = 'bold')
+plt.show()
