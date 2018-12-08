@@ -19,16 +19,22 @@ def GenerateAdjacencyMatrix(numberOfNodes, probability):
             
             # Generate a random value between 0 to 1.
             
-            randomValue = random.uniform(0, 1)
-            
+            randomValue = random.random()
+
+
             # If in the lower diagonal, compare the probability and the given
             # threshold to determine if a link between the two nodes should be
             # made or not.
             
+            """
             if i > j:
                 if randomValue <= probability:
                     adjacencyMatrix[i, j] = 1
                     adjacencyMatrix[j, i] = 1
+            """
+            if randomValue <= probability/2:
+                adjacencyMatrix[i, j] = 1
+                adjacencyMatrix[j, i] = 1
 
     return adjacencyMatrix
 
