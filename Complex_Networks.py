@@ -7,7 +7,7 @@ import Random_Network
 import SmallWorld_Network
 #import ScaleFree_Network
 
-import Network_Analysis
+import Network_Analysis_Functions
 
 # Define the number of nodes.
 

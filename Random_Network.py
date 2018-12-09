@@ -32,9 +32,10 @@ def GenerateAdjacencyMatrix(numberOfNodes, probability):
                     adjacencyMatrix[i, j] = 1
                     adjacencyMatrix[j, i] = 1
             """
-            if randomValue <= probability/2:
-                adjacencyMatrix[i, j] = 1
-                adjacencyMatrix[j, i] = 1
+            if i != j:
+                if randomValue <= probability/2:
+                    adjacencyMatrix[i, j] = 1
+                    adjacencyMatrix[j, i] = 1
 
     return adjacencyMatrix
 
