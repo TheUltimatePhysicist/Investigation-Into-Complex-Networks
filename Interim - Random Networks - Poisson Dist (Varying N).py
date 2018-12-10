@@ -17,7 +17,7 @@ import Distribution_Analysis_Functions
 #--------------------------------------------------------------------------------------------------
 #
 # Initialise the probability and N array.
-probability = 0.25
+probability = 0.50
 N_Array = np.arange(50, 1050, 50)
 
 
@@ -71,7 +71,6 @@ plt.show()
 #--------------------------------------------------------------------------------------------------
 #
 # 
-
 differencesArray = np.zeros_like(N_Array)
 
 for i in range(0, N_Array.shape[0]):
@@ -89,4 +88,27 @@ plt.ylabel("Root Of Sum Of Differences")
 plt.title("Differences Of Poisson Fit Against Varying N Data (Fixed Probability)")
 plt.show()
 
+
+#--------------------------------------------------------------------------------------------------
+# This section looks at how the standard deviations of the Poisson fit compares with the standard
+# deviation of the original data.
+#--------------------------------------------------------------------------------------------------
+# 
+# 
+stdOfDegreeArray = np.zeros_like(N_Array)
+rootMeanOfPoisson = np.zeros_like(N_Array)
+
+for i in range(0, N_Array.shape[0]):
+    stdOfDegreeArray[i] = np.std(degreeDistributions[i][1, :])
+    rootMeanOfPoisson[i] = np.sqrt(extractedLambdaValues[i])
+
+plt.figure("Comparison Of Root-Mean and STD of Poisson data")
+plt.plot(N_Array, stdOfDegreeArray, label = "Standard Deviation Of Data")
+plt.plot(N_Array, rootMeanOfPoisson, label = "Root-Mean Of Poisson")
+
+plt.xlabel("Number Of Nodes")
+plt.ylabel("Error")
+plt.title("Comparison Of Root-Mean and STD of Poisson data")
+plt.legend(loc = "best")
+plt.show()
 
