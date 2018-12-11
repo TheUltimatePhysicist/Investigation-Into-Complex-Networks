@@ -56,7 +56,7 @@ degreeArray = np.zeros((2, adjacencyMatrix_RandomNetwork.shape[0]))
 for i in range(0, adjacencyMatrix_RandomNetwork.shape[0]):
 
     degreeArray[0, i] = i
-    degreeOfNode = Network_Analysis.DegreeOfNode(adjacencyMatrix_RandomNetwork, i)
+    degreeOfNode = Network_Analysis_Functions.DegreeOfNode(adjacencyMatrix_RandomNetwork, i)
     degreeArray[1, degreeOfNode] += 1
     
 plt.figure("Random Network Degree Distribution")
@@ -80,8 +80,8 @@ plt.show()
 #averageDegreeOfRandomNetwork = Network_Analysis.AverageDegree(adjacencyMatrix_RandomNetwork)
 #averageDegreeOfSmallWorldNetwork = Network_Analysis.AverageDegree(adjacencyMatrix_SmallWorldNetwork)
 
-#print (" ")
-#print ("-----------------------------------------------------------------------")
+print (" ")
+print ("-----------------------------------------------------------------------")
 #print ("Average degree of regular network = ", averageDegreeOfRegularNetwork)
 #print ("Average degree of random network = ", averageDegreeOfRandomNetwork)
 #print ("Average degree of small-world network = ", averageDegreeOfSmallWorldNetwork)
@@ -89,12 +89,12 @@ plt.show()
 
 # Print the clustering coefficients of the networks.
 #clusteringCoefficientOfRegularNetwork = Network_Analysis.AverageClusteringCoefficient(adjacencyMatrix_RegularNetwork)
-#clusteringCoefficientOfRandomNetwork = Network_Analysis.AverageClusteringCoefficient(adjacencyMatrix_RandomNetwork)
+clusteringCoefficientOfRandomNetwork = Network_Analysis_Functions.AverageClusteringCoefficient(adjacencyMatrix_RandomNetwork)
 #clusteringCoefficientOfSmallWorldNetwork = Network_Analysis.AverageClusteringCoefficient(adjacencyMatrix_SmallWorldNetwork)
 
 #print (" ")
 #print ("Average clustering coefficient of regular network = ", clusteringCoefficientOfRegularNetwork)
-#print ("Average clustering coefficient of random network = ", clusteringCoefficientOfRandomNetwork)
+print ("Average clustering coefficient of random network = ", clusteringCoefficientOfRandomNetwork)
 #print ("Average clustering coefficient of small-world network = ", clusteringCoefficientOfSmallWorldNetwork)
 
 
