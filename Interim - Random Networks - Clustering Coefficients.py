@@ -39,7 +39,12 @@ for i in range(0, N_Array.shape[0]):
 # Plot the resulting data.
 plt.figure("Clustering Coefficients Of Random Networks (Probability = " + str(probability) + ")")
 plt.plot(N_Array, clusteringCoefficientArray)
-plt.show()
+
+plt.xlabel("Number Of Nodes")
+plt.ylabel("Clustering Coefficient")
+plt.title("Clustering Coefficients Of Random Networks (Probability = " + str(probability) + ")")
+plt.grid()
+plt.savefig("Clustering Coefficients Of Random Networks (Probability = " + str(probability) + ").png")
 
 
 #--------------------------------------------------------------------------------------------------
@@ -71,5 +76,10 @@ for i in range(0, P_Array.shape[0]):
 # Plot the resulting data.
 plt.figure("Clustering Coefficients Of Random Networks (N = " + str(N) + ")")
 plt.plot(P_Array, clusteringCoefficientArray)
-plt.show()
+
+plt.xlabel("Probability")
+plt.ylabel("Clustering Coefficient")
+plt.title("Clustering Coefficients Of Random Networks (N = " + str(N) + ")")
+plt.grid()
+plt.savefig("Clustering Coefficients Of Random Networks (N = " + str(N) + ").png")
 

@@ -26,7 +26,7 @@ def GenerateAdjacencyMatrix(numberOfNodes, probability):
             # threshold to determine if a link between the two nodes should be
             # made or not.
             
-            """
+
             if i > j:
                 if randomValue <= probability:
                     adjacencyMatrix[i, j] = 1
@@ -36,6 +36,7 @@ def GenerateAdjacencyMatrix(numberOfNodes, probability):
                 if randomValue <= probability/2:
                     adjacencyMatrix[i, j] = 1
                     adjacencyMatrix[j, i] = 1
+            """
 
     return adjacencyMatrix
 

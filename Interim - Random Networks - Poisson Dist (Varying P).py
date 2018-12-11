@@ -16,7 +16,7 @@ import Distribution_Analysis_Functions
 #--------------------------------------------------------------------------------------------------
 #
 # Initialise the N and probability array.
-N = 100
+N = 250
 P_Array = np.arange(0.05, 1.05, 0.05)
 
 
@@ -56,13 +56,14 @@ for i in range(0, P_Array.shape[0]):
     plt.plot(
         newDegreeArray,
         N * Distribution_Analysis_Functions.PoissonDistribution(newDegreeArray, extractedLambdaValues[i]),
-        label = "P = " + "{0:.2f}".format(P_Array[i])) #str(P_Array[i]))
+        label = "P = " + "{0:.2f}".format(P_Array[i]))
 
 plt.xlabel("Degree")
 plt.ylabel("Number Of Nodes")
 plt.title("Poisson Distribution Of Varying Probability (N = " + str(N) + ")")
 plt.legend(loc = "best")
-plt.show()
+plt.grid()
+plt.savefig("Poisson Distribution Of Varying Probability (N = " + str(N) + ").png")
 
 
 #--------------------------------------------------------------------------------------------------
@@ -78,14 +79,28 @@ for i in range(0, P_Array.shape[0]):
     differencesArray[i] = np.sqrt(np.sum(delta))
 
 
-#
+# Fit a straight line to the data.
+estimateGradient = differencesArray[len(differencesArray) - 1] / P_Array[len(P_Array) - 1]
+estimateIntercept = 0
+popt, pcov = curve_fit(
+                    Distribution_Analysis_Functions.StraightLine,
+                    P_Array, differencesArray,
+                    (estimateGradient, estimateIntercept))
+
+
+# Plot the data.
 plt.figure("Differences Of Poisson Fit Against Varying Probability Data (N = " + str(N) + ")")
-plt.plot(P_Array, differencesArray)
+plt.plot(P_Array, differencesArray, label = 'Original Data')
+
+xArray = np.linspace(P_Array[0], P_Array[len(P_Array) - 1], 1000)
+plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt[0], popt[1]), label = 'Line Of Best Fit')
 
 plt.xlabel("Probability")
 plt.ylabel("Root Of Sum Of Differences")
 plt.title("Differences Of Poisson Fit Against Varying Probability Data (N = " + str(N) + ")")
-plt.show()
+plt.legend(loc = "best")
+plt.grid()
+plt.savefig("Differences Of Poisson Fit Against Varying Probability Data (N = " + str(N) + ").png")
 
 
 #--------------------------------------------------------------------------------------------------
@@ -101,13 +116,39 @@ for i in range(0, P_Array.shape[0]):
     stdOfDegreeArray[i] = np.std(degreeDistributions[i][1, :])
     rootMeanOfPoisson[i] = np.sqrt(extractedLambdaValues[i])
 
+
+# Fit a straight line to the standard deviation data.
+estimateGradient = stdOfDegreeArray[len(stdOfDegreeArray) - 1] / P_Array[len(P_Array) - 1]
+estimateIntercept = 0
+popt_std, pcov_std = curve_fit(
+                        Distribution_Analysis_Functions.StraightLine,
+                        P_Array, stdOfDegreeArray,
+                        (estimateGradient, estimateIntercept))
+
+
+# Fit a straight line to the root mean data.
+estimateGradient = rootMeanOfPoisson[len(rootMeanOfPoisson) - 1] / P_Array[len(P_Array) - 1]
+estimateIntercept = 0
+popt_rootmean, pcov_rootmean = curve_fit(
+                                        Distribution_Analysis_Functions.StraightLine,
+                                        P_Array, rootMeanOfPoisson,
+                                        (estimateGradient, estimateIntercept))
+
+
+# Plot the data.
 plt.figure("Comparison Of Root-Mean and STD of Poisson data")
 plt.plot(P_Array, stdOfDegreeArray, label = "Standard Deviation Of Data")
 plt.plot(P_Array, rootMeanOfPoisson, label = "Root-Mean Of Poisson")
+
+
+xArray = np.linspace(P_Array[0], P_Array[len(P_Array) - 1], 1000)
+plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt_std[0], popt_std[1]), label = 'STD Best Fit')
+plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt_rootmean[0], popt_rootmean[1]), label = 'Root-Mean Best Fit')
 
 plt.xlabel("Probability")
 plt.ylabel("Error")
 plt.title("Comparison Of Root-Mean and STD of Poisson data")
 plt.legend(loc = "best")
-plt.show()
+plt.grid()
+plt.savefig("Comparison Of Root-Mean and STD of Poisson data.png")
 

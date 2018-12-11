@@ -17,7 +17,7 @@ import Distribution_Analysis_Functions
 #
 # Define the number of nodes and probability.
 numberOfNodes = 200
-probability = 0.9
+probability = 1.0
 
 # Define the adjacency matrix.
 adjacencyMatrix_RandomNetwork = Random_Network.GenerateAdjacencyMatrix(numberOfNodes, probability)

@@ -9,6 +9,7 @@ import Network_Analysis_Functions
 # FUNCTIONS
 #--------------------------------------------------------------------------------------------------
 
+
 def DegreeDistributionData(adjacencyMatrix):
     
     array = np.zeros((2, adjacencyMatrix.shape[0]))
@@ -25,3 +26,9 @@ def DegreeDistributionData(adjacencyMatrix):
 def PoissonDistribution(degreeArray, lambdaMeanValue):
 
     return np.exp((degreeArray * np.log(lambdaMeanValue)) - lambdaMeanValue - scipy.special.gammaln(degreeArray + 1))
+
+
+def StraightLine(xArray, gradient, intercept):
+
+    return (gradient * xArray) + intercept
+

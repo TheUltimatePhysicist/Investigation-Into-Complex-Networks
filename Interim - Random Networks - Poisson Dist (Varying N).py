@@ -8,6 +8,7 @@ from scipy.optimize import curve_fit
 import Random_Network
 import Network_Analysis_Functions
 import Distribution_Analysis_Functions
+from Input_Output_Support_Functions import *
 
 
 #--------------------------------------------------------------------------------------------------
@@ -63,7 +64,14 @@ plt.xlabel("Degree")
 plt.ylabel("Number Of Nodes")
 plt.title("Various Poisson Distributions for Different N nodes (P = " + str(probability) + ")")
 plt.legend(loc = "best")
-plt.show()
+plt.grid()
+plt.savefig("Various Poisson Distributions for Different N nodes (P = " + str(probability) + ").png")
+
+
+# Output the extracted mean values of the Poisson fitting.
+outputFile = open("Poisson Distribution - Extracted Mean Values - Varying N.txt", 'w')
+WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Poisson Mean Value", extractedLambdaValues)
+outputFile.close()
 
 
 #--------------------------------------------------------------------------------------------------
@@ -79,14 +87,36 @@ for i in range(0, N_Array.shape[0]):
     differencesArray[i] = np.sqrt(np.sum(delta))
 
 
-#
+# Fit a straight line to the data.
+estimateGradient = differencesArray[len(differencesArray) - 1] / N_Array[len(N_Array) - 1]
+estimateIntercept = 0
+popt, pcov = curve_fit(
+                    Distribution_Analysis_Functions.StraightLine,
+                    N_Array, differencesArray,
+                    (estimateGradient, estimateIntercept))
+
+
+# Plot the data.
 plt.figure("Differences Of Poisson Fit Against Varying N Data (P = " + str(probability) + ")")
-plt.plot(N_Array, differencesArray)
+plt.plot(N_Array, differencesArray, label = 'Original Data')
+
+xArray = np.linspace(N_Array[0], N_Array[len(N_Array) - 1], 1000)
+plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt[0], popt[1]), label = 'Line Of Best Fit')
 
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Root Of Sum Of Differences")
 plt.title("Differences Of Poisson Fit Against Varying N Data (P = " + str(probability) + ")")
-plt.show()
+plt.legend(loc = "best")
+plt.grid()
+plt.savefig("Differences Of Poisson Fit Against Varying N Data (P = " + str(probability) + ").png")
+
+
+# Output data to text file.
+outputFile = open("Poisson Distribution - Divergance - Varying N.txt", 'w')
+WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Difference", differencesArray)
+
+outputFile.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt[0]) + "\n Intercept = " + str(popt[1]))
+outputFile.close()
 
 
 #--------------------------------------------------------------------------------------------------
@@ -102,13 +132,51 @@ for i in range(0, N_Array.shape[0]):
     stdOfDegreeArray[i] = np.std(degreeDistributions[i][1, :])
     rootMeanOfPoisson[i] = np.sqrt(extractedLambdaValues[i])
 
+
+# Fit a straight line to the standard deviation data.
+estimateGradient = stdOfDegreeArray[len(stdOfDegreeArray) - 1] / N_Array[len(N_Array) - 1]
+estimateIntercept = 0
+popt_std, pcov_std = curve_fit(
+                        Distribution_Analysis_Functions.StraightLine,
+                        N_Array, stdOfDegreeArray,
+                        (estimateGradient, estimateIntercept))
+
+
+# Fit a straight line to the root mean data.
+estimateGradient = rootMeanOfPoisson[len(rootMeanOfPoisson) - 1] / N_Array[len(N_Array) - 1]
+estimateIntercept = 0
+popt_rootmean, pcov_rootmean = curve_fit(
+                                        Distribution_Analysis_Functions.StraightLine,
+                                        N_Array, rootMeanOfPoisson,
+                                        (estimateGradient, estimateIntercept))
+
+
+# Plot the data.
 plt.figure("Comparison Of Root-Mean and STD of Poisson data")
 plt.plot(N_Array, stdOfDegreeArray, label = "Standard Deviation Of Data")
 plt.plot(N_Array, rootMeanOfPoisson, label = "Root-Mean Of Poisson")
+
+xArray = np.linspace(N_Array[0], N_Array[len(N_Array) - 1], 1000)
+plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt_std[0], popt_std[1]), label = 'STD Best Fit')
+plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt_rootmean[0], popt_rootmean[1]), label = 'Root-Mean Best Fit')
 
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Error")
 plt.title("Comparison Of Root-Mean and STD of Poisson data")
 plt.legend(loc = "best")
-plt.show()
+plt.grid()
+plt.savefig("Comparison Of Root-Mean and STD of Poisson data.png")
 
+
+# Output data to text file.
+outputFile_std = open("Poisson Distribution - STD Of Data - Varying N.txt", 'w')
+outputFile_rtMean = open("Poisson Distribution - Root Mean Of Fits - Varying N.txt", 'w')
+
+WritePlottingDataToTxtFile(outputFile_std, "N", N_Array, "STD", stdOfDegreeArray)
+WritePlottingDataToTxtFile(outputFile_rtMean, "N", N_Array, "Root-Mean", rootMeanOfPoisson)
+
+outputFile_std.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt_std[0]) + "\n Intercept = " + str(popt_std[1]))
+outputFile_rtMean.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt_rootmean[0]) + "\n Intercept = " + str(popt_rootmean[1]))
+
+outputFile_std.close()
+outputFile_rtMean.close()
