@@ -18,7 +18,7 @@ from Input_Output_Support_Functions import *
 #--------------------------------------------------------------------------------------------------
 #
 # Initialise the probability and N array.
-probability = 0.50
+probability = 0.050
 N_Array = np.arange(50, 1050, 50)
 
 
@@ -66,6 +66,7 @@ plt.title("Various Poisson Distributions for Different N nodes (P = " + str(prob
 plt.legend(loc = "best")
 plt.grid()
 plt.savefig("Various Poisson Distributions for Different N nodes (P = " + str(probability) + ").png")
+plt.show()
 
 
 # Output the extracted mean values of the Poisson fitting.
@@ -75,7 +76,7 @@ outputFile.close()
 
 
 #--------------------------------------------------------------------------------------------------
-# This section looks at how the poisson fitting diverges from the data as N changes.
+# This section looks at how the Poisson fitting diverges from the data as N changes.
 #--------------------------------------------------------------------------------------------------
 #
 # 
@@ -152,7 +153,7 @@ popt_rootmean, pcov_rootmean = curve_fit(
 
 
 # Plot the data.
-plt.figure("Comparison Of Root-Mean and STD of Poisson data")
+plt.figure("Comparison Of Root-Mean and STD of Poisson data - Varying N")
 plt.plot(N_Array, stdOfDegreeArray, label = "Standard Deviation Of Data")
 plt.plot(N_Array, rootMeanOfPoisson, label = "Root-Mean Of Poisson")
 
@@ -162,10 +163,10 @@ plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt_rootm
 
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Error")
-plt.title("Comparison Of Root-Mean and STD of Poisson data")
+plt.title("Comparison Of Root-Mean and STD of Poisson data - Varying N")
 plt.legend(loc = "best")
 plt.grid()
-plt.savefig("Comparison Of Root-Mean and STD of Poisson data.png")
+plt.savefig("Comparison Of Root-Mean and STD of Poisson data - Varying N.png")
 
 
 # Output data to text file.

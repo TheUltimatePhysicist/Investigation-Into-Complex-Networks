@@ -61,7 +61,7 @@ plt.savefig("Average Degree Of Random Networks (Probability = " + str(probabilit
 
 
 # Output data to text file.
-outputFile = open("Average Degree - Varying N.txt", 'w')
+outputFile = open("Random Networks - Average Degree - Varying N.txt", 'w')
 WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Avg. Degree", averageDegreeArray)
 
 outputFile.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt[0]) + "\n Intercept = " + str(popt[1]))
@@ -118,7 +118,7 @@ plt.savefig("Average Degree Of Random Networks (N = " + str(N) + ")")
 
 
 # Output data to text file.
-outputFile = open("Average Degree - Varying P.txt", 'w')
+outputFile = open("Random Networks - Average Degree - Varying P.txt", 'w')
 WritePlottingDataToTxtFile(outputFile, "P", P_Array, "Avg. Degree", averageDegreeArray)
 
 outputFile.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt[0]) + "\n Intercept = " + str(popt[1]))
