@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import Regular_Network
 import Random_Network
 import SmallWorld_Network
-#import ScaleFree_Network
+import ScaleFree_Network
 
 import Network_Analysis_Functions
 
@@ -19,6 +19,7 @@ numberOfNodes = 100
 adjacencyMatrix_RegularNetwork = Regular_Network.GenerateAdjacencyMatrix(numberOfNodes)
 adjacencyMatrix_RandomNetwork = Random_Network.GenerateAdjacencyMatrix(numberOfNodes, 0.5)
 adjacencyMatrix_SmallWorldNetwork = SmallWorld_Network.GenerateAdjacencyMatrix(numberOfNodes, 10, 0.5)
+adjacencyMatrix_ScaleFreeNetwork = ScaleFree_Network.GenerateAdjacencyMatrix(numberOfNodes)
 
 
 # Create a networkx graph.
@@ -26,6 +27,7 @@ adjacencyMatrix_SmallWorldNetwork = SmallWorld_Network.GenerateAdjacencyMatrix(n
 G_RegularNetwork = nx.from_numpy_matrix(adjacencyMatrix_RegularNetwork)
 G_RandomNetwork = nx.from_numpy_matrix(adjacencyMatrix_RandomNetwork)
 G_SmallWorldNetwork = nx.from_numpy_matrix(adjacencyMatrix_SmallWorldNetwork)
+G_ScaleFreeNetwork = nx.from_numpy_matrix(adjacencyMatrix_ScaleFreeNetwork)
 
 
 # Plot the regular networkx graph.
@@ -44,6 +46,12 @@ plt.show()
 
 plt.figure("Small-World Network")
 nx.draw(G_SmallWorldNetwork, with_labels = True, font_weight = 'bold')
+plt.show()
+
+# Plot the scale free networkx graph.
+
+plt.figure("Scale-Free Network")
+nx.draw(G_ScaleFreeNetwork, with_labels = True, font_weight = 'bold')
 plt.show()
 
 # Determine whether the random networks follow a Poisson distribution.
