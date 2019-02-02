@@ -18,7 +18,7 @@ from Input_Output_Support_Functions import *
 #--------------------------------------------------------------------------------------------------
 #
 # Initialise the probability and N array.
-probability = 0.050
+probability = 0.50
 N_Array = np.arange(50, 1050, 50)
 
 
@@ -85,7 +85,7 @@ differencesArray = np.zeros_like(N_Array)
 for i in range(0, N_Array.shape[0]):
 
     delta = degreeDistributions[i][1, :] - Distribution_Analysis_Functions.PoissonDistribution(degreeDistributions[i][0, :], extractedLambdaValues[i])
-    differencesArray[i] = np.sqrt(np.sum(delta))
+    differencesArray[i] = np.sqrt(np.sum(delta**2))
 
 
 # Fit a straight line to the data.

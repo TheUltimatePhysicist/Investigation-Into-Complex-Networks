@@ -17,7 +17,7 @@ from Input_Output_Support_Functions import *
 #--------------------------------------------------------------------------------------------------
 #
 # Initialise the N and probability array.
-N = 250
+N = 500
 P_Array = np.arange(0.05, 1.05, 0.05)
 
 
@@ -84,7 +84,7 @@ differencesArray = np.zeros_like(P_Array)
 for i in range(0, P_Array.shape[0]):
 
     delta = degreeDistributions[i][1, :] - Distribution_Analysis_Functions.PoissonDistribution(degreeDistributions[i][0, :], extractedLambdaValues[i])
-    differencesArray[i] = np.sqrt(np.sum(delta))
+    differencesArray[i] = np.sqrt(np.sum(delta**2))
 
 
 # Fit a straight line to the data.
@@ -98,7 +98,7 @@ popt, pcov = curve_fit(
 
 # Plot the data.
 plt.figure("Differences Of Poisson Fit Against Varying Probability Data (N = " + str(N) + ")")
-plt.plot(P_Array, differencesArray, label = 'Original Data')
+plt.plot((P_Array), (differencesArray), label = 'Original Data')
 """
 xArray = np.linspace(P_Array[0], P_Array[len(P_Array) - 1], 1000)
 plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt[0], popt[1]), label = 'Line Of Best Fit')
@@ -109,7 +109,7 @@ plt.title("Differences Of Poisson Fit Against Varying Probability Data (N = " + 
 plt.legend(loc = "best")
 plt.grid()
 plt.savefig("Differences Of Poisson Fit Against Varying Probability Data (N = " + str(N) + ").png")
-
+plt.show()
 
 # Output data to text file.
 outputFile = open("Poisson Distribution - Divergance - Varying P.txt", 'w')
