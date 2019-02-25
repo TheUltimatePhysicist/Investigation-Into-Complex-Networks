@@ -32,3 +32,8 @@ def StraightLine(xArray, gradient, intercept):
 
     return (gradient * xArray) + intercept
 
+
+def ExponentialTail(degreeArray, gammaValue):
+
+    return degreeArray**(-1 * gammaValue)
+

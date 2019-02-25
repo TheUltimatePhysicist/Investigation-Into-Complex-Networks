@@ -22,12 +22,35 @@ adjacencyMatrix = ScaleFree_Network.GenerateAdjacencyMatrix(N)
 degreeDistribution = Distribution_Analysis_Functions.DegreeDistributionData(adjacencyMatrix)
 
 plt.figure("Scale-Free Networks - Degree Distribution")
-plt.loglog(degreeDistribution[0, :], degreeDistribution[1, :])
+plt.plot(degreeDistribution[0, :], degreeDistribution[1, :])
+
+
+estimatedGammaValue = 0.05
+
+popt, pcov = curve_fit(
+                        Distribution_Analysis_Functions.ExponentialTail,
+                        degreeDistribution[0, :],
+                        (degreeDistribution[1, :]) / N)
+
+newDegreeArray = np.linspace(0, N, 1000)
+
+plt.plot(newDegreeArray, N * Distribution_Analysis_Functions.ExponentialTail(newDegreeArray, popt[0]))
+
+print(popt[0])
 plt.savefig("Scale-Free Networks - Degree Distribution.png")
+
+
+
+
+plt.figure("Scale-Free Networks - LogLog Degree Distribution")
+plt.loglog(degreeDistribution[0, :], degreeDistribution[1, :])
+plt.savefig("Scale-Free Networks - LogLog Degree Distribution.png")
 
 
 #------------------------------------------------------------------------------------------
 # This section fits an exponential to the power-tails of various scale-free networks.
 #------------------------------------------------------------------------------------------
+
+
 
 
