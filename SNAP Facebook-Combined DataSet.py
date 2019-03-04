@@ -3,7 +3,10 @@ import matplotlib.pyplot as plt
 
 G = nx.read_edgelist('facebook_combined.txt')
 
-plt.figure()
-nx.draw(G, with_labels = True, font_weight = 'bold')
+SP = nx.spring_layout(G)
+
+plt.axis('off')
+
+nx.draw_networkx(G, pos = SP, with_labels = False, node_size = 35)
 plt.show()
 

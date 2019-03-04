@@ -34,9 +34,12 @@ popt, pcov = curve_fit(
 
 newDegreeArray = np.linspace(0, N, 1000)
 
-plt.plot(newDegreeArray, N * Distribution_Analysis_Functions.ExponentialTail(newDegreeArray, popt[0]))
+#plt.plot(newDegreeArray, N * Distribution_Analysis_Functions.ExponentialTail(newDegreeArray, popt[0]))
 
 print(popt[0])
+plt.xlabel('Degree')
+plt.ylabel('Number Of Nodes')
+plt.title('Degree Distribution Of Scale-Free Networks, N = ' + str(N))
 plt.savefig("Scale-Free Networks - Degree Distribution.png")
 
 
@@ -44,6 +47,10 @@ plt.savefig("Scale-Free Networks - Degree Distribution.png")
 
 plt.figure("Scale-Free Networks - LogLog Degree Distribution")
 plt.loglog(degreeDistribution[0, :], degreeDistribution[1, :])
+
+plt.xlabel('Degree')
+plt.ylabel('Number Of Nodes')
+plt.title('Log-Log Degree Distribution Of Scale-Free Networks, N = ' + str(N))
 plt.savefig("Scale-Free Networks - LogLog Degree Distribution.png")
 
 
