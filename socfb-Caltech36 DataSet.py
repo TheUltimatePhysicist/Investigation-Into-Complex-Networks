@@ -4,7 +4,7 @@ from scipy.io import mmread
 
 #rawData = mmread("socfb-Caltech36.mtx")
 
-G = nx.read_edgelist('socfb-Caltech36.txt')
+G = nx.read_edgelist('NetworkRepository_Data/socfb-Caltech36.txt')
 
 print (len(G))
 print (nx.number_of_edges(G))
