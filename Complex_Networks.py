@@ -3,11 +3,11 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 from NetworkTypes import Regular_Network
-import Random_Network
-import SmallWorld_Network
-import ScaleFree_Network
+from NetworkTypes import Random_Network
+from NetworkTypes import SmallWorld_Network
+from NetworkTypes import ScaleFree_Network
 
-import Network_Analysis_Functions
+from SupportingFunctions import Network_Analysis_Functions
 
 # Define the number of nodes.
 

@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-G = nx.read_edgelist('facebook_combined.txt')
+G = nx.read_edgelist('SNAP_Data/facebook_combined.txt')
 
 SP = nx.spring_layout(G)
 
