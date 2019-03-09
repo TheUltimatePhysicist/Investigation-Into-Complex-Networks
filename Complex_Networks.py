@@ -2,7 +2,7 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
-import Regular_Network
+from NetworkTypes import Regular_Network
 import Random_Network
 import SmallWorld_Network
 import ScaleFree_Network
