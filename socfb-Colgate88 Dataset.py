@@ -1,9 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-# Number Of Nodes = 769
+# Number Of Nodes = 3482
 
-G = nx.read_edgelist('NetworkRepository_Data/socfb-Caltech36.txt')
+G = nx.read_edgelist('NetworkRepository_Data/socfb-Colgate88.txt')
 
 print (len(G))
 print (nx.number_of_edges(G))
@@ -13,4 +13,3 @@ plt.axis('off')
 
 nx.draw_networkx(G, with_labels = False, node_size = 35)
 plt.show()
-
