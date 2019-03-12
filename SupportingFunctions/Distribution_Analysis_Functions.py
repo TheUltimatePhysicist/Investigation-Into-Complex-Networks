@@ -2,7 +2,7 @@ import scipy
 import math as m
 import numpy as np
 
-import Network_Analysis_Functions
+from SupportingFunctions import Network_Analysis_Functions
 
 
 #--------------------------------------------------------------------------------------------------

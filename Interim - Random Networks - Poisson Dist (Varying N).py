@@ -115,7 +115,6 @@ plt.savefig("Differences Of Poisson Fit Against Varying N Data (P = " + str(prob
 # Output data to text file.
 outputFile = open("Poisson Distribution - Divergance - Varying N.txt", 'w')
 WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Difference", differencesArray)
-
 outputFile.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt[0]) + "\n Intercept = " + str(popt[1]))
 outputFile.close()
 
