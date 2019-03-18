@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 # Number Of Nodes = 4087
 
-G = nx.read_edgelist('NetworkRepository_Data/socfb-Rice31.txt')
+G = nx.read_edgelist('NetworkRepository_Data/socfb-Rice31/socfb-Rice31.txt')
 
 print (len(G))
 print (nx.number_of_edges(G))

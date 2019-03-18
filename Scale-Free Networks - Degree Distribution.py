@@ -5,10 +5,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-import ScaleFree_Network
-import Network_Analysis_Functions
-import Distribution_Analysis_Functions
-from Input_Output_Support_Functions import *
+from NetworkTypes import ScaleFree_Network
+from SupportingFunctions import Network_Analysis_Functions 
+from SupportingFunctions import Distribution_Analysis_Functions
+from SupportingFunctions import Input_Output_Support_Functions as IO
 
 
 #------------------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ from Input_Output_Support_Functions import *
 # network of a given size.
 #------------------------------------------------------------------------------------------
 
-N = 500
+N = 5000
 
 adjacencyMatrix = ScaleFree_Network.GenerateAdjacencyMatrix(N)
 degreeDistribution = Distribution_Analysis_Functions.DegreeDistributionData(adjacencyMatrix)
@@ -25,16 +25,17 @@ plt.figure("Scale-Free Networks - Degree Distribution")
 plt.plot(degreeDistribution[0, :], degreeDistribution[1, :])
 
 
-estimatedGammaValue = 0.05
+estimatedGammaValue = 3
 
 popt, pcov = curve_fit(
                         Distribution_Analysis_Functions.ExponentialTail,
                         degreeDistribution[0, :],
-                        (degreeDistribution[1, :]) / N)
+                        degreeDistribution[1, :])
 
 newDegreeArray = np.linspace(0, N, 1000)
+popt[0] = estimatedGammaValue
 
-#plt.plot(newDegreeArray, N * Distribution_Analysis_Functions.ExponentialTail(newDegreeArray, popt[0]))
+plt.plot(newDegreeArray, N*Distribution_Analysis_Functions.ExponentialTail(newDegreeArray, popt[0]))
 
 print(popt[0])
 plt.xlabel('Degree')
@@ -47,6 +48,7 @@ plt.savefig("Scale-Free Networks - Degree Distribution.png")
 
 plt.figure("Scale-Free Networks - LogLog Degree Distribution")
 plt.loglog(degreeDistribution[0, :], degreeDistribution[1, :])
+plt.loglog(newDegreeArray, N *Distribution_Analysis_Functions.ExponentialTail(newDegreeArray, popt[0]))
 
 plt.xlabel('Degree')
 plt.ylabel('Number Of Nodes')
