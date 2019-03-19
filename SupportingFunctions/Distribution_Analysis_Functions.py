@@ -29,11 +29,19 @@ def PoissonDistribution(degreeArray, lambdaMeanValue):
 
 
 def StraightLine(xArray, gradient, intercept):
+    
+    returnedArray = np.zeros_like(xArray)
 
-    return (gradient * xArray) + intercept
+    for i in range(len(returnedArray)):
+        if (np.isfinite(xArray[i])  == False):
+            xArray[i] = 0
+        
+        returnedArray[i] = (gradient * xArray[i]) + intercept
+
+    return returnedArray
 
 
 def ExponentialTail(degreeArray, gammaValue):
 
-    return degreeArray**(-1 * gammaValue)
+    return degreeArray**(gammaValue)
 
