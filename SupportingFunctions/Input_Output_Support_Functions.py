@@ -30,3 +30,27 @@ def ReadPlottingDataFromTxtFile(fileName):
         return array1, array2
 
 
+def CleanRepeatedValuesOfNetworkRepData(inputArray1, inputArray2):
+
+        # Indices (12, 13) and (23,24) are identical in N.
+        outputArray1 = np.zeros(len(inputArray1) - 2)
+        outputArray2 = np.zeros(len(inputArray2) - 2)
+
+        for i in range(0, 12):
+                outputArray1[i] = inputArray1[i]
+                outputArray2[i] = inputArray2[i]
+        
+        outputArray1[12] = (inputArray1[12] + inputArray1[13]) / 2
+        outputArray2[12] = (inputArray2[12] + inputArray2[13]) / 2
+
+        for i in range(13, 22):
+                outputArray1[i] = inputArray1[i + 1]
+                outputArray2[i] = inputArray2[i + 1]
+
+        outputArray1[22] = (inputArray1[23] + inputArray1[24]) / 2
+        outputArray2[22] = (inputArray2[23] + inputArray2[24]) / 2
+
+        return outputArray1, outputArray2
+
+
+

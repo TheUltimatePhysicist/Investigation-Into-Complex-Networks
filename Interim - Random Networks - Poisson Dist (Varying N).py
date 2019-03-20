@@ -5,10 +5,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-import Random_Network
-import Network_Analysis_Functions
-import Distribution_Analysis_Functions
-from Input_Output_Support_Functions import *
+from NetworkTypes import Random_Network
+from SupportingFunctions import Network_Analysis_Functions
+from SupportingFunctions import Distribution_Analysis_Functions
+from SupportingFunctions import Input_Output_Support_Functions as IO
 
 
 #--------------------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ plt.show()
 
 # Output the extracted mean values of the Poisson fitting.
 outputFile = open("Poisson Distribution - Extracted Mean Values - Varying N.txt", 'w')
-WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Poisson Mean Value", extractedLambdaValues)
+IO.WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Poisson Mean Value", extractedLambdaValues)
 outputFile.close()
 
 
@@ -114,7 +114,7 @@ plt.savefig("Differences Of Poisson Fit Against Varying N Data (P = " + str(prob
 
 # Output data to text file.
 outputFile = open("Poisson Distribution - Divergance - Varying N.txt", 'w')
-WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Difference", differencesArray)
+IO.WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Difference", differencesArray)
 outputFile.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt[0]) + "\n Intercept = " + str(popt[1]))
 outputFile.close()
 
@@ -172,8 +172,8 @@ plt.savefig("Comparison Of Root-Mean and STD of Poisson data - Varying N.png")
 outputFile_std = open("Poisson Distribution - STD Of Data - Varying N.txt", 'w')
 outputFile_rtMean = open("Poisson Distribution - Root Mean Of Fits - Varying N.txt", 'w')
 
-WritePlottingDataToTxtFile(outputFile_std, "N", N_Array, "STD", stdOfDegreeArray)
-WritePlottingDataToTxtFile(outputFile_rtMean, "N", N_Array, "Root-Mean", rootMeanOfPoisson)
+IO.WritePlottingDataToTxtFile(outputFile_std, "N", N_Array, "STD", stdOfDegreeArray)
+IO.WritePlottingDataToTxtFile(outputFile_rtMean, "N", N_Array, "Root-Mean", rootMeanOfPoisson)
 
 outputFile_std.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt_std[0]) + "\n Intercept = " + str(popt_std[1]))
 outputFile_rtMean.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt_rootmean[0]) + "\n Intercept = " + str(popt_rootmean[1]))

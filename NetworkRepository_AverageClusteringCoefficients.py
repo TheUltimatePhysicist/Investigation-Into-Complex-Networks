@@ -87,14 +87,36 @@ numberArray, averageClusteringCoefficients = IO.ReadPlottingDataFromTxtFile(file
 
 plt.figure()
 plt.grid()
-plt.plot(numberOfNodesArray, averageClusteringCoefficients)
+plt.plot(numberOfNodesArray, averageClusteringCoefficients, label='Data')
+
+
+# Fit a straight line to the data.
+estimateGradient = 0
+estimateIntercept = 0.3
+
+numberArray_temp, clusteringArray_temp = IO.CleanRepeatedValuesOfNetworkRepData(numberOfNodesArray, averageClusteringCoefficients)
+popt, pcov = curve_fit(
+                    Distribution_Analysis_Functions.StraightLine,
+                    numberArray_temp, clusteringArray_temp,
+                    (estimateGradient, estimateIntercept))
+xArray = np.linspace(numberOfNodesArray[0], numberOfNodesArray[len(numberOfNodesArray) - 1], 1000)
+plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt[0], popt[1]), label = 'Line Of Best Fit')
+
 
 plt.ylim(0, 1)
+plt.legend(loc='best')
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Average Clustering Coefficient")
 plt.title("Average Clustering Coefficients Of Social Media Networks (Varying N)")
 plt.savefig("NetworkRepository_Data/Average Clustering Coefficients Of Social Media Networks (Varying N)")
 plt.close()
 
+print('')
+print('----------------------------------------------')
 
+pvar = np.diag(pcov)
 
+print('Gradient = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+print('Intercept = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
+print('----------------------------------------------')
+print('')
