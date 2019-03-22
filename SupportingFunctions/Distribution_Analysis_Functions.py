@@ -45,3 +45,8 @@ def ExponentialTail(degreeArray, gammaValue):
 
     return degreeArray**(gammaValue)
 
+
+def LogCurve(xArray, coefficient):
+    return coefficient*(np.log(xArray))
+
+
