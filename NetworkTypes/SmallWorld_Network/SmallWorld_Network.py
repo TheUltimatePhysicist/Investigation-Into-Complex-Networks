@@ -24,8 +24,7 @@ def GenerateAdjacencyMatrix(numberOfNodes, averageDegree, probability):
     
     return watts_strogatz(numberOfNodes, edgeDensity, probability)
     
-    
-    
+
 
  
 def _distance_matrix(L):
