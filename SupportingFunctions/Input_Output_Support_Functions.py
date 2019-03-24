@@ -53,4 +53,24 @@ def CleanRepeatedValuesOfNetworkRepData(inputArray1, inputArray2):
         return outputArray1, outputArray2
 
 
+def CleanArraysOfZeroValues(inputArray1, inputArray2):
+        
+        #
+        outputArray1 = []
+        outputArray2 = []
+
+        #
+        for i in range(len(inputArray1)):
+
+                if ((inputArray1[i] != 0) and (inputArray2[i] != 0)):
+
+                        outputArray1.append(inputArray1[i])
+                        outputArray2.append(inputArray2[i])
+        
+        outputArray1 = np.array(outputArray1)
+        outputArray2 = np.array(outputArray2)
+        
+        return outputArray1, outputArray2
+
+
 
