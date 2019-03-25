@@ -1,6 +1,8 @@
-import scipy
+import scipy.misc
+import scipy.special
 import math as m
 import numpy as np
+import decimal
 
 from SupportingFunctions import Network_Analysis_Functions
 
@@ -50,6 +52,43 @@ def LogCurve(xArray, coefficient):
     return coefficient*(np.log(xArray))
 
 
-def DiracDeltaFunction():
+def DiracDeltaFunction(degreeArray, k, p):
 
+    # j = degree array
+    # k = number of neighbouring nodes.
+    # n = summation index
+    # p = probability
+
+
+
+    returnArray = np.zeros(len(degreeArray))
+
+    for j in range(len(degreeArray)):
+
+        if j < k: 
+            returnArray[j] = 0
+        else:
+
+            #
+            summation = 0
+            summationLimit = np.min((j - k, k))
+
+            for n in range(int(summationLimit)):
+
+                binomialCoefficient = scipy.misc.comb(k, n)
+
+                decimal.getcontext().prec = 100
+
+
+                numerator = (( decimal.Decimal(p*k)  )**(  decimal.Decimal(j - k - n)  ))
+                denominator = decimal.Decimal(m.factorial(int(j - k - n)))
+
+                fraction = decimal.Decimal(numerator) / decimal.Decimal(denominator)
+
+                summation += decimal.Decimal(  binomialCoefficient * ((1 - p)**n) * (p**(k - n))   ) * fraction *    decimal.Decimal(  np.exp(-1*p*k)  )
     
+            returnArray[j] = summation
+
+    return returnArray
+
+
