@@ -50,3 +50,6 @@ def LogCurve(xArray, coefficient):
     return coefficient*(np.log(xArray))
 
 
+def DiracDeltaFunction():
+
+    

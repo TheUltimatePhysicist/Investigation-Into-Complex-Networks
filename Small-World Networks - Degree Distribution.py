@@ -82,7 +82,7 @@ plt.savefig("Scale-Free Networks - LogLog Degree Distribution.png")
 '''
 
 #------------------------------------------------------------------------------------------
-# This section produces a fit for varioussmall-world networks.
+# This section produces a fit for various small-world networks.
 #------------------------------------------------------------------------------------------
 
 

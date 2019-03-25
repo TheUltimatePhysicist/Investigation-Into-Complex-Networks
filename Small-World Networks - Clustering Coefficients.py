@@ -28,8 +28,8 @@ smallWorlds_G = [None] * len(N_Array)
 
 for i in range(0, N_Array.shape[0]):
 
-    #averageDegree = 20
-    averageDegree = int(proportionOfAverageDegree * N_Array[i])
+    averageDegree = 5
+    #averageDegree = int(proportionOfAverageDegree * N_Array[i])
 
     smallWorlds_G[i] = nx.watts_strogatz_graph(int(N_Array[i]),
                                                int(averageDegree),
@@ -81,7 +81,7 @@ smallWorlds_G = [None] * len(N_Array)
 
 for i in range(0, P_Array.shape[0]):
 
-    averageDegree = 20
+    averageDegree = 5
 
     smallWorlds_G[i] = nx.watts_strogatz_graph(N,
                                                int(averageDegree),
