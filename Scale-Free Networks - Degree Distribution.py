@@ -100,7 +100,7 @@ for i in range(len(N_Array)):
 
     for j in range(numberOfRepeats):
 
-        adjacencyMatrix = ScaleFree_Network.GenerateAdjacencyMatrix(N_Array[i])
+        adjacencyMatrix = nx.to_numpy_matrix(nx.barabasi_albert_graph(N_Array[i], 5))
         degreeDistribution = Distribution_Analysis_Functions.DegreeDistributionData(adjacencyMatrix)
 
         array1, array2 = IO.CleanArraysOfZeroValues(degreeDistribution[0, :], degreeDistribution[1, :])

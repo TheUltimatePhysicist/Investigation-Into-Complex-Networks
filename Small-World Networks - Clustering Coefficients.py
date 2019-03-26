@@ -21,30 +21,27 @@ probability = 0.50
 N_Array = np.arange(50, 1050, 50)
 
 proportionOfAverageDegree = 20/50
+averageDegree = 5
 
-
-# Create the adjacency matrices for varying N.
-smallWorlds_G = [None] * len(N_Array)
-
-for i in range(0, N_Array.shape[0]):
-
-    averageDegree = 5
-    #averageDegree = int(proportionOfAverageDegree * N_Array[i])
-
-    smallWorlds_G[i] = nx.watts_strogatz_graph(int(N_Array[i]),
-                                               int(averageDegree),
-                                               probability)
-    
-    print('N = ' + str(N_Array[i]) + ' Generated')
-
-               
 # Compute the clustering coefficient values.
 clusteringCoefficientArray = np.zeros(N_Array.shape[0])
 
+
 for i in range(0, N_Array.shape[0]):
+
+    summation = 0
+
+    numberOfRepeats = 10
+    for j in range(numberOfRepeats):
+        #averageDegree = int(proportionOfAverageDegree * N_Array[i])
+
+        smallWorlds_G = nx.watts_strogatz_graph(int(N_Array[i]),
+                                                int(averageDegree),
+                                                probability)
+        summation += nx.average_clustering(smallWorlds_G)
     
-    clusteringCoefficientArray[i] = nx.average_clustering(smallWorlds_G[i])
-    print ("N = " + str(N_Array[i]) + ", Coefficient = " + str(clusteringCoefficientArray[i]))
+    clusteringCoefficientArray[i] = summation / numberOfRepeats
+
 
 # Output the data to a .txt file.
 fileDestination = 'NetworkTypes/SmallWorld_Network/AverageClusteringCoefficients (Varying N).txt'
@@ -57,6 +54,10 @@ N_Array, clusteringCoefficientArray = IO.ReadPlottingDataFromTxtFile(fileDestina
 # Plot the resulting data.
 plt.figure()
 plt.plot(N_Array, clusteringCoefficientArray)
+
+expectedClusteringValue = ((3*(averageDegree -1)) / (2*((2*averageDegree) - 1))) * ((1 - probability)**3)
+
+plt.plot(N_Array, expectedClusteringValue*(N_Array**0))
 
 plt.ylim(0, 1)
 plt.xlabel("Number Of Nodes")

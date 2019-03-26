@@ -46,7 +46,7 @@ print ('Fitted Number Of Neighboring Nodes = ' + str(popt[0]))
 print ('Fitted Probability = ' + str(popt[1]))
 
 jArray = np.linspace(degreeDistribution[0,0], degreeDistribution[0, -1], 1000)
-plt.plot(jArray, N * Distribution_Analysis_Functions.DiracDeltaFunction(jArray, popt[0], popt[1]))
+plt.plot(jArray, N * Distribution_Analysis_Functions.DiracDeltaFunction(jArray, averageDegree, probability))
 
 
 plt.grid()
