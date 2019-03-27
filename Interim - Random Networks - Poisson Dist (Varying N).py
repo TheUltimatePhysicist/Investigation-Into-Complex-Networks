@@ -5,7 +5,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-from NetworkTypes import Random_Network
+from NetworkTypes.Random_Network import Random_Network
 from SupportingFunctions import Network_Analysis_Functions
 from SupportingFunctions import Distribution_Analysis_Functions
 from SupportingFunctions import Input_Output_Support_Functions as IO
@@ -54,11 +54,14 @@ plt.figure("Poisson Distribution Of Varying N (P = " + str(probability) + ")")
 for i in range(0, N_Array.shape[0]):
     plt.plot(degreeDistributions[i][0, :], degreeDistributions[i][1, :])
 
+
+
     newDegreeArray = np.linspace(0, N_Array[i], 1000)
     plt.plot(
         newDegreeArray,
         N_Array[i] * Distribution_Analysis_Functions.PoissonDistribution(newDegreeArray, extractedLambdaValues[i]),
         label = "N = " + str(N_Array[i]))
+
 
 plt.xlabel("Degree")
 plt.ylabel("Number Of Nodes")
@@ -68,6 +71,12 @@ plt.grid()
 plt.savefig("Various Poisson Distributions for Different N nodes (P = " + str(probability) + ").png")
 plt.show()
 
+
+######
+plt.figure()
+plt.loglog(degreeDistributions[10][0,:], degreeDistributions[10][1,:], 'o')
+plt.show()
+######
 
 # Output the extracted mean values of the Poisson fitting.
 outputFile = open("Poisson Distribution - Extracted Mean Values - Varying N.txt", 'w')

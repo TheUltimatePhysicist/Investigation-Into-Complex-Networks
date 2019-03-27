@@ -92,3 +92,12 @@ def DiracDeltaFunction(degreeArray, k, p):
     return returnArray
 
 
+
+def FirstIndexContainingGivenValue(array, specifiedValue):
+
+    for i in range(len(array)):
+        if(array[i] == specifiedValue):
+            return i
+
+
+

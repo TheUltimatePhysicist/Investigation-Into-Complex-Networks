@@ -21,7 +21,7 @@ def ExpectedPathLengthCurve(array):
 #--------------------------------------------------------------------------------------------------
 #
 # Initialise the probability and N array.
-N_Array = np.arange(50, 1050, 50)
+N_Array = np.arange(1000, 4050, 50)
 
       
 # Compute the clustering coefficient values.
@@ -30,10 +30,10 @@ averageShortestPathLengths = np.zeros(N_Array.shape[0])
 for i in range(0, N_Array.shape[0]):
 
     summation = 0
-    numberOfRepeats = 2
+    numberOfRepeats = 5
 
     for j in range(numberOfRepeats):
-        scaleFrees_G = nx.barabasi_albert_graph(int(N_Array[i]), 5)
+        scaleFrees_G = nx.barabasi_albert_graph(int(N_Array[i]), 1)
 
         summation += nx.average_shortest_path_length(scaleFrees_G)
     print(N_Array[i])

@@ -11,6 +11,10 @@ from SupportingFunctions import Distribution_Analysis_Functions
 from SupportingFunctions import Input_Output_Support_Functions as IO
 
 
+def ExpectedClusteringValue(k, p):
+    return ((3*(k - 1)) / (2*((2*k) - 1))) * ((1 - p)**3)
+
+
 #--------------------------------------------------------------------------------------------------
 # This section looks at a fixed probability value and varying node number, to determine how the
 # clustering coefficient changes over a range of N.
@@ -53,11 +57,11 @@ N_Array, clusteringCoefficientArray = IO.ReadPlottingDataFromTxtFile(fileDestina
 
 # Plot the resulting data.
 plt.figure()
-plt.plot(N_Array, clusteringCoefficientArray)
+plt.plot(N_Array, clusteringCoefficientArray, 'o')
 
-expectedClusteringValue = ((3*(averageDegree -1)) / (2*((2*averageDegree) - 1))) * ((1 - probability)**3)
+#expectedClusteringValue = ((3*(averageDegree -1)) / (2*((2*averageDegree) - 1))) * ((1 - probability)**3)
 
-plt.plot(N_Array, expectedClusteringValue*(N_Array**0))
+plt.plot(N_Array, ExpectedClusteringValue(averageDegree, probability)*(N_Array**0))
 
 plt.ylim(0, 1)
 plt.xlabel("Number Of Nodes")
@@ -73,20 +77,10 @@ plt.savefig('NetworkTypes/SmallWorld_Network/Average Clustering Coefficients Of 
 #--------------------------------------------------------------------------------------------------
 #
 # Initialise N and the probability array.
-N = 250
+N = 1000
 P_Array = np.arange(0.05, 1.05, 0.05)
 
-
-# Create the networks for varying N.
-smallWorlds_G = [None] * len(N_Array)
-
-for i in range(0, P_Array.shape[0]):
-
-    averageDegree = 5
-
-    smallWorlds_G[i] = nx.watts_strogatz_graph(N,
-                                               int(averageDegree),
-                                               P_Array[i])
+averageDegree = 5
 
 
 # Compute the clustering coefficient values.
@@ -94,13 +88,24 @@ clusteringCoefficientArray = np.zeros(P_Array.shape[0])
 
 for i in range(0, P_Array.shape[0]):
 
-    clusteringCoefficientArray[i] = nx.average_clustering(smallWorlds_G[i])
-    print ("P = " + "{0:.2f}".format(P_Array[i]) + ", Coefficient = " + str(clusteringCoefficientArray[i]))
+    summation = 0
+    numberOfRepeats = 5
+    for j in range(numberOfRepeats):
+        smallWorlds_G = nx.watts_strogatz_graph(N,
+                                                int(averageDegree),
+                                                P_Array[i])
+        summation += nx.average_clustering(smallWorlds_G)
+                                               
+    clusteringCoefficientArray[i] = summation / numberOfRepeats
+
 
 
 # Plot the resulting data.
 plt.figure("Clustering Coefficients Of Small-World Networks (N = " + str(N) + ")")
-plt.plot(P_Array, clusteringCoefficientArray)
+plt.plot(P_Array, clusteringCoefficientArray, 'o')
+
+xArray = np.linspace(P_Array[0], P_Array[-1], 1000)
+plt.plot(xArray, ExpectedClusteringValue(averageDegree, xArray))
 
 plt.xlabel("Probability")
 plt.ylabel("Clustering Coefficient")
@@ -113,5 +118,4 @@ plt.show()
 # Output the data to a .txt file.
 fileDestination = 'NetworkTypes/SmallWorld_Network/AverageClusteringCoefficients (Varying P).txt'
 IO.WritePlottingDataToTxtFile(fileDestination, "P", P_Array, "Difference", clusteringCoefficientArray)
-
 

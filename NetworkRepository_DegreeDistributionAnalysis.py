@@ -7,7 +7,7 @@ from scipy.optimize import curve_fit
 
 from SupportingFunctions import Network_Analysis_Functions 
 from SupportingFunctions import Distribution_Analysis_Functions
-from SupportingFunctions import Input_Output_Support_Functions as IO
+from SupportingFunctions import Input_Output_Support_Functions as IO 
 
 
 #------------------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ datasetDesignation = np.array(["socfb-Caltech36",
                                "socfb-Howard90",
                                "socfb-Rice31"])
 
-numberOfDatasets = len(datasetDesignation) + 1
+numberOfDatasets = len(datasetDesignation)
 
 numberOfNodesArray = np.array([769,
                                962,
@@ -69,37 +69,51 @@ numberOfNodesArray = np.array([769,
                                4047])
 
 
-# 
 
-for i in range(0, numberOfDatasets - 1):
+gammaArray = np.zeros(numberOfDatasets)
+gammaErrorsArray = np.zeros(numberOfDatasets)
+interceptArray = np.zeros(numberOfDatasets)
+interceptErrorsArray = np.zeros(numberOfDatasets)
+
+# 
+for i in range(0, numberOfDatasets):
+    print ('started ' + str(i) + ' out of 24')
+
     fileDestination = 'NetworkRepository_Data/' + datasetDesignation[i] + '/' + datasetDesignation[i] + '_DegreeDistribution.txt'
     degreeArray, numberArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
 
-    # 
-    '''
-    estimatedGammaValue = -1
-    popt, pcov = curve_fit(
-                        Distribution_Analysis_Functions.ExponentialTail,
-                        degreeArray,
-                        numberArray,
-                        estimatedGammaValue)
-    '''
-    estimatedGammaValue = -3
-    estimatedIntercept = 0
-    popt, pcov = curve_fit(
-                        Distribution_Analysis_Functions.StraightLine,
-                        np.log(degreeArray),
-                        np.log(numberArray),
-                        estimatedGammaValue,
-                        estimatedIntercept)
 
-    secondDegreeArray = np.linspace(0, numberOfNodesArray[i], numberOfNodesArray[i]*2)
+    array1, array2 = IO.CleanArraysOfZeroValues(degreeArray, numberArray)
+    array1 = np.log(array1)
+    array2 = np.log(array2)
+
+    endPoint = len(array1) - 1 #Distribution_Analysis_Functions.FirstIndexContainingGivenValue(array2, 0)
+    '''
+    # 
+    estimatedVal_1 = 5
+    estimatedVal_2 = 0.5
+    popt, pcov = curve_fit(
+                            Distribution_Analysis_Functions.DiracDeltaFunction,
+                            degreeArray,
+                            numberArray,
+                            (estimatedVal_1, estimatedVal_2))
+    
+    #
+    pvar = np.diag(pcov)
+
+    gammaArray[i] = popt[0]
+    gammaErrorsArray[i] = np.sqrt(pvar[0])
+    interceptArray[i] = popt[1]
+    interceptErrorsArray[i] = np.sqrt(pvar[1])
+    '''
 
     # Create a raw plot of the degree distribution.
     plt.figure()
     plt.grid()
     plt.plot(degreeArray, numberArray)
-    plt.plot(secondDegreeArray, Distribution_Analysis_Functions.ExponentialTail(secondDegreeArray, popt[0]))
+
+    #newArray = np.linspace(0, numberOfNodesArray[i], 1000)
+    #plt.plot(newArray, numberOfNodesArray[i] * Distribution_Analysis_Functions.DiracDeltaFunction(newArray, popt[0], popt[1]))
 
     plt.xlabel("Degree")
     plt.ylabel("Number Of Nodes")
@@ -107,16 +121,42 @@ for i in range(0, numberOfDatasets - 1):
     plt.savefig("NetworkRepository_Data/" + datasetDesignation[i] + "/Degree Distribution Of " + datasetDesignation[i] + " (N = " + str(numberOfNodesArray[i]) + ")")
     plt.close()
 
-
     # 
     plt.figure()
     plt.grid()
-    plt.loglog(degreeArray, numberArray, 'o')
-    plt.plot(secondDegreeArray, Distribution_Analysis_Functions.StraightLine(secondDegreeArray, popt[0], popt[1]))
+    plt.ylim(0, 5)
+    plt.xlim(0, 6)
+    plt.plot(array1, array2, 'o')
+
+    #arrayfit1, arrayfit2 = IO.CleanArraysOfZeroValues(newArray, numberOfNodesArray[i] * Distribution_Analysis_Functions.DiracDeltaFunction(newArray, popt[0], popt[1]))
+    #arrayfit1 = np.log(arrayfit1)
+    #arrayfit2 = np.log(arrayfit2)
+    #plt.plot(arrayfit1, arrayfit2)
+    #secondDegreeArray = np.linspace(array1[0], array1[-1], 1000)
+    #plt.plot(secondDegreeArray, np.log(Distribution_Analysis_Functions.DiracDeltaFunction(secondDegreeArray, popt[0], popt[1])))
 
     plt.xlabel("Degree")
     plt.ylabel("Number Of Nodes")
     plt.title("Log-Log Degree Distribution Of " + datasetDesignation[i] +  " (N = " + str(numberOfNodesArray[i]) + ")")
     plt.savefig("NetworkRepository_Data/" + datasetDesignation[i] + "/Log-Log Degree Distribution Of " + datasetDesignation[i] + " (N = " + str(numberOfNodesArray[i]) + ")")
     plt.close()
+
+
+#
+fileDestination = 'NetworkRepository_Data/Gamma Values For Scale-Free Model (Varying N).txt'
+#IO.WritePlottingDataToTxtFile(fileDestination, 'Number Of Nodes', numberOfNodesArray, 'Gamma', gammaArray)
+#N_Array, gammaArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
+
+fileDestination = 'NetworkRepository_Data/Gamma Error Values For Scale-Free Model (Varying N).txt'
+#IO.WritePlottingDataToTxtFile(fileDestination, 'Number Of Nodes', numberOfNodesArray, 'Gamma Errors', gammaErrorsArray)
+#N_Array, gammaErrorsArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
+
+fileDestination = 'NetworkRepository_Data/Intercept Values For Scale-Free Model (Varying N).txt'
+#IO.WritePlottingDataToTxtFile(fileDestination, 'Number Of Nodes', numberOfNodesArray, 'Gamma', interceptArray)
+#N_Array, interceptArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
+
+fileDestination = 'NetworkRepository_Data/Intercept Error Values For Scale-Free Model (Varying N).txt'
+#IO.WritePlottingDataToTxtFile(fileDestination, 'Number Of Nodes', numberOfNodesArray, 'Gamma', interceptErrorsArray)
+#N_Array, interceptErrorsArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
+
 

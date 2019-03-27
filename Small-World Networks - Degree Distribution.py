@@ -16,9 +16,9 @@ from SupportingFunctions import Input_Output_Support_Functions as IO
 # size.
 #------------------------------------------------------------------------------------------
 
-N = 200
+N = 100
 averageDegree = 20
-probability = 0.6
+probability = 0.4
 
 #G = nx.watts_strogatz_graph(N, averageDegree, probability)
 #plt.figure()
@@ -55,6 +55,9 @@ plt.ylabel('Number Of Nodes')
 plt.title('Degree Distribution Of Small-World Networks, N = ' + str(N))
 plt.savefig("NetworkTypes/SmallWorld_Network/Small-World Networks - Degree Distribution.png")
 
+plt.figure()
+plt.loglog(degreeDistribution[0,:], degreeDistribution[1,:], 'o')
+plt.show()
 
 #------------------------------------------------------------------------------------------
 # This section produces a fit for various small-world networks.
