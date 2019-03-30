@@ -11,8 +11,8 @@ from SupportingFunctions import Distribution_Analysis_Functions
 from SupportingFunctions import Input_Output_Support_Functions as IO
 
 
-def ExpectedPathLengthCurve(array):
-    return ((np.log(array)) / (np.log(np.log(array))))
+def ExpectedPathLengthCurve(array, verticalTranslation, scalingFactor):
+    return (((np.log(array)) / (np.log(np.log(array)))) + verticalTranslation)*scalingFactor
 
 
 #--------------------------------------------------------------------------------------------------
@@ -23,21 +23,23 @@ def ExpectedPathLengthCurve(array):
 # Initialise the probability and N array.
 N_Array = np.arange(1000, 4050, 50)
 
-      
+    
 # Compute the clustering coefficient values.
 averageShortestPathLengths = np.zeros(N_Array.shape[0])
 
 for i in range(0, N_Array.shape[0]):
 
     summation = 0
-    numberOfRepeats = 5
+    numberOfRepeats = 3
 
     for j in range(numberOfRepeats):
-        scaleFrees_G = nx.barabasi_albert_graph(int(N_Array[i]), 1)
+        scaleFrees_G = nx.barabasi_albert_graph(N_Array[i], 5)
 
         summation += nx.average_shortest_path_length(scaleFrees_G)
-    print(N_Array[i])
     averageShortestPathLengths[i] = summation / numberOfRepeats
+    #print(ExpectedPathLengthCurve(N_Array[i]))
+    print (averageShortestPathLengths[i])
+    print ('---')
 
 
 
@@ -51,12 +53,19 @@ N_Array, averageShortestPathLengths = IO.ReadPlottingDataFromTxtFile(fileDestina
 
 # Plot the resulting data.
 plt.figure()
-plt.plot(N_Array, averageShortestPathLengths)
+plt.plot(N_Array, averageShortestPathLengths, 'o', label='Data')
+
+
+popt, pcov = curve_fit(
+                   ExpectedPathLengthCurve,
+                   N_Array, averageShortestPathLengths,
+                   1, 1)
 
 xArray = np.linspace(N_Array[0], N_Array[-1], 1000)
-plt.plot(xArray, ExpectedPathLengthCurve(xArray))
-
+plt.plot(xArray, ExpectedPathLengthCurve(xArray, popt[0], popt[1]), label='Curve Of Best Fit')
+print (popt[0])
 #plt.ylim(0, 1)
+plt.legend(loc='best')
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Average Shortest Path Length")
 plt.title("Average Shortest Path Lengths Of Scale-Free Networks (Varying N)")

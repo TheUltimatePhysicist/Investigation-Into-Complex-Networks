@@ -16,13 +16,13 @@ from SupportingFunctions import Input_Output_Support_Functions as IO
 # network of a given size.
 #------------------------------------------------------------------------------------------
 
-N = 250
+N = 2500
 
 adjacencyMatrix = nx.to_numpy_matrix((nx.barabasi_albert_graph(N, 1))) #ScaleFree_Network.GenerateAdjacencyMatrix(N)
 degreeDistribution = Distribution_Analysis_Functions.DegreeDistributionData(adjacencyMatrix)
 
 plt.figure("Scale-Free Networks - Degree Distribution")
-plt.plot(degreeDistribution[0, :], degreeDistribution[1, :], label='Data')
+plt.plot(degreeDistribution[0, 1:50], degreeDistribution[1, 1:50], 'o', label='Data')
 
 
 
@@ -69,7 +69,7 @@ plt.title('Log-Log Degree Distribution Of Scale-Free Networks, N = ' + str(N))
 plt.savefig("NetworkTypes/ScaleFree_Network/Scale-Free Networks - LogLog Degree Distribution.png")
 
 
-
+'''
 #------------------------------------------------------------------------------------------
 # This section fits an exponential to the power-tails of various scale-free networks.
 #------------------------------------------------------------------------------------------
@@ -156,7 +156,7 @@ plt.ylabel('Gamma Value')
 plt.title('Gamma Exponent Constant Of Scale-Free Networks (Varying N)')
 plt.savefig("NetworkTypes/ScaleFree_Network/Gamma Exponent Constant Of Scale-Free Networks (Varying N).png")
 
-'''
+
 #
 plt.figure()
 plt.plot(N_Array, gammaErrorsArray, 'o')
@@ -166,7 +166,7 @@ plt.xlabel('Number Of Nodes')
 plt.ylabel('Gamma Value Error')
 plt.title('Gamma Exponent Error Of Scale-Free Networks (Varying N)')
 plt.savefig("NetworkTypes/ScaleFree_Network/Gamma Exponent Error Of Scale-Free Networks (Varying N).png")
-'''
+
 
 #
 plt.figure()
@@ -180,5 +180,5 @@ plt.plot(N_Array, np.log(N_Array), label='lnN Curve')
 plt.title('Intercept Of LogLog Degree Distribution For Scale-Free Networks (Varying N)')
 plt.savefig("NetworkTypes/ScaleFree_Network/Intercept Of LogLog Degree Distribution For Scale-Free Networks (Varying N).png")
 
-
+'''
 

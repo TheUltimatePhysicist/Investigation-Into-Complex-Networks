@@ -11,8 +11,8 @@ from SupportingFunctions import Distribution_Analysis_Functions
 from SupportingFunctions import Input_Output_Support_Functions as IO
 
 
-def ExpectedScaleFreeClusteringCurve(xArray, constant):
-    return xArray**(-1*constant)
+def ExpectedScaleFreeClusteringCurve(xArray, constant, scalingFactor):
+    return scalingFactor*(xArray**(-1*constant))
 
 
 #--------------------------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ def ExpectedScaleFreeClusteringCurve(xArray, constant):
 #--------------------------------------------------------------------------------------------------
 #
 # Initialise the probability and N array.
-N_Array = np.arange(50, 1550, 50)
+N_Array = np.arange(1000, 4050, 50)
 
 #proportionOfAverageDegree = 20/50
                
@@ -36,7 +36,7 @@ for i in range(0, N_Array.shape[0]):
     numberOfRepeats = 10
 
     for j in range(numberOfRepeats):
-        scaleFrees_G = nx.from_numpy_matrix(  nx.to_numpy_matrix(  nx.barabasi_albert_graph(int(N_Array[i]), 5)  )   )
+        scaleFrees_G = nx.barabasi_albert_graph(N_Array[i], 5)
         sum += nx.average_clustering(scaleFrees_G)
     
     clusteringCoefficientArray[i] = sum / numberOfRepeats
@@ -56,21 +56,23 @@ N_Array, clusteringCoefficientArray = IO.ReadPlottingDataFromTxtFile(fileDestina
 
 # Plot the resulting data.
 plt.figure()
-plt.plot(N_Array, clusteringCoefficientArray)
+plt.plot(N_Array, clusteringCoefficientArray, 'o', label='Data')
 
 
 popt, pcov = curve_fit(
                         ExpectedScaleFreeClusteringCurve,
                         N_Array,
                         clusteringCoefficientArray,
-                        0.75)
+                        (0.75, 1))
 
 
 curveArray = np.linspace(N_Array[0], N_Array[len(N_Array)-1], 1000)
-plt.plot(curveArray, ExpectedScaleFreeClusteringCurve(curveArray, popt[0]))
+plt.plot(curveArray, ExpectedScaleFreeClusteringCurve(curveArray, popt[0], popt[1]), label='Curve Of Best Fit')
 print (popt[0])
+print (popt[1])
 
-plt.ylim(0, 0.5)
+#plt.ylim(0, 0.5)
+plt.legend(loc='best')
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Clustering Coefficient")
 plt.title("Clustering Coefficients Of Scale-Free Networks (Varying N)")

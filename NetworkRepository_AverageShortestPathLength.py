@@ -10,6 +10,9 @@ from SupportingFunctions import Distribution_Analysis_Functions
 from SupportingFunctions import Input_Output_Support_Functions as IO
 
 
+def ExpectedPathLengthCurve(array, verticalTranslation):
+    return ((np.log(array)) / (np.log(np.log(array)))) + verticalTranslation
+
 #------------------------------------------------------------------------------------------
 # Important Arrays.
 #------------------------------------------------------------------------------------------
@@ -97,20 +100,33 @@ numberArray, meanShortestPathLengths = IO.ReadPlottingDataFromTxtFile(fileDestin
 
 plt.figure()
 plt.grid()
-plt.plot(numberArray, meanShortestPathLengths, label='Data')
+plt.plot(numberArray, meanShortestPathLengths, 'o', label='Data')
+
+rejectN = ([962, 2920, 2970, 4047])
+rejectL = ([2.461460580087011, 2.5794220201138502, 2.5851341528000336, 2.4174042005935936])
+
+plt.plot(rejectN, rejectL, 'o', c='gray', label='Reject')
+
+
+numberArray_temp, meanPathArray_temp = IO.CleanRepeatedValuesOfNetworkRepData(numberArray, meanShortestPathLengths)
+
+
+# Fit a line to the data. Small-World.
+popt, pcov = curve_fit(
+                    Distribution_Analysis_Functions.LogCurve,
+                    numberArray_temp, meanPathArray_temp,
+                    0.4)
+xArray = np.linspace(rejectN[0], rejectN[len(rejectN) - 1], 1000)
+plt.plot(xArray, Distribution_Analysis_Functions.LogCurve(xArray, popt[0]), label = 'WS Curve Of Best Fit')
 
 '''
-# Fit a line to the data.
-estimateGradient = 0
-estimateIntercept = 0.3
-
-numberArray_temp, clusteringArray_temp = IO.CleanRepeatedValuesOfNetworkRepData(numberOfNodesArray, averageClusteringCoefficients)
+# Fit a line to the data. Scale-Free.
 popt, pcov = curve_fit(
-                    Distribution_Analysis_Functions.StraightLine,
-                    numberArray_temp, clusteringArray_temp,
-                    (estimateGradient, estimateIntercept))
-xArray = np.linspace(numberOfNodesArray[0],     numberOfNodesArray[len(numberOfNodesArray) - 1], 1000)
-plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt[0], popt[1]), label = 'Line Of Best Fit')
+                    ExpectedPathLengthCurve,
+                    numberArray_temp, meanPathArray_temp,
+                    1)
+xArray = np.linspace(rejectN[0], rejectN[len(rejectN) - 1], 1000)
+plt.plot(xArray, ExpectedPathLengthCurve(xArray, popt[0]), c='g', label = 'BA Curve Of Best Fit')
 '''
 
 plt.ylim(2, 3)
@@ -132,5 +148,13 @@ print('Intercept = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
 print('----------------------------------------------')
 print('')
 '''
+
+differences = meanShortestPathLengths - Distribution_Analysis_Functions.LogCurve(numberArray, popt[0])
+sum = 0
+for i in range(len(meanShortestPathLengths)):
+    sum += (differences[i])**2
+RMS_Diff = (sum / len(meanShortestPathLengths))**(0.5)
+print (RMS_Diff)
+
 
 

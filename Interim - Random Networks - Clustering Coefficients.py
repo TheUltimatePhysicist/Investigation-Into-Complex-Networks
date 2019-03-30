@@ -5,10 +5,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-import Random_Network
-import Network_Analysis_Functions
-import Distribution_Analysis_Functions
-from Input_Output_Support_Functions import *
+from NetworkTypes.Random_Network import Random_Network
+from SupportingFunctions import Network_Analysis_Functions
+from SupportingFunctions import Distribution_Analysis_Functions
+from SupportingFunctions import Input_Output_Support_Functions as IO
 
 """
 #--------------------------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ popt, pcov = curve_fit(
 
 # Plot the resulting data.
 plt.figure("Clustering Coefficients Of Random Networks (Probability = " + str(probability) + ")")
-plt.plot(N_Array, clusteringCoefficientArray, label = 'Original Data')
+plt.plot(N_Array, clusteringCoefficientArray, 'o', label = 'Original Data')
 
 
 xArray = np.linspace(N_Array[0], N_Array[len(N_Array) - 1], 1000)
@@ -81,13 +81,13 @@ plt.savefig("Clustering Coefficients Of Random Networks (Probability = " + str(p
 
 # Output the data to a .txt file.
 outputFile = open("Random Networks - Clustering Coefficients - Varying N.txt", 'w')
-WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Difference", clusteringCoefficientArray)
+#WritePlottingDataToTxtFile(outputFile, "N", N_Array, "Difference", clusteringCoefficientArray)
 
 outputFile.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt[0]) + "\n Intercept = " + str(popt[1]))
 outputFile.close()
 
 
-"""
+
 #--------------------------------------------------------------------------------------------------
 # This section looks at a fixed node number and varying probability, to determine how the
 # clustering coefficient changes over a range of probabilities.
@@ -125,7 +125,7 @@ popt, pcov = curve_fit(
 
 # Plot the resulting data.
 plt.figure("Clustering Coefficients Of Random Networks (N = " + str(N) + ")")
-plt.plot(P_Array, clusteringCoefficientArray, label = "Original Data")
+plt.plot(P_Array, clusteringCoefficientArray, 'o', label = "Original Data")
 
 xArray = np.linspace(P_Array[0], P_Array[len(P_Array) - 1], 1000)
 plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt[0], popt[1]), label = 'Line Of Best Fit')
@@ -141,9 +141,9 @@ plt.savefig("Clustering Coefficients Of Random Networks (N = " + str(N) + ").png
 
 # Output the data to a .txt file.
 outputFile = open("Random Networks - Clustering Coefficients - Varying P.txt", 'w')
-WritePlottingDataToTxtFile(outputFile, "P", P_Array, "Difference", clusteringCoefficientArray)
+#WritePlottingDataToTxtFile(outputFile, "P", P_Array, "Difference", clusteringCoefficientArray)
 
 outputFile.write("\n" + "Best fit line:" + "\n Gradient = " + str(popt[0]) + "\n Intercept = " + str(popt[1]))
 outputFile.close()
-"""
+
 

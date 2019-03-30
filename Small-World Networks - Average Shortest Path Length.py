@@ -46,7 +46,7 @@ print (meanShortestPathArray)
 
 plt.figure()
 plt.grid()
-plt.plot(N_Array, meanShortestPathArray, label = 'Data')
+plt.plot(N_Array, meanShortestPathArray, 'o', label = 'Data')
 
 # Fit a log-e curve to the data.
 popt, pcov = curve_fit(
@@ -61,7 +61,7 @@ plt.legend(loc='best')
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Mean Shortest Path Length")
 plt.title("Mean Shortest Path Length Of Small-World Networks (Varying N)")
-plt.savefig("Mean Shortest Path Length Of Small-World Networks (Varying N)")
+plt.savefig("NetworkTypes/SmallWorld_Network/Mean Shortest Path Length Of Small-World Networks (Varying N)")
 plt.close()
 
 print('')
