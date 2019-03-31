@@ -17,8 +17,8 @@ from SupportingFunctions import Input_Output_Support_Functions as IO
 #------------------------------------------------------------------------------------------
 
 N = 1000
-averageDegree = 10
-probability = 0.75
+averageDegree =20
+probability = 0.5
 
 #G = nx.watts_strogatz_graph(N, averageDegree, probability)
 #plt.figure()
@@ -46,9 +46,9 @@ print ('Fitted Number Of Neighboring Nodes = ' + str(popt[0]))
 print ('Fitted Probability = ' + str(popt[1]))
 
 jArray = np.linspace(degreeDistribution[0,0], degreeDistribution[0, -1], 1000)
-plt.plot(jArray, N * Distribution_Analysis_Functions.DiracDeltaFunction(jArray, popt[0], popt[1]), label='Curve Of Best Fit')
+plt.plot(jArray - 20, N * Distribution_Analysis_Functions.DiracDeltaFunction(jArray, popt[0], popt[1]), label='Curve Of Best Fit')
 
-
+plt.xlim(0, 200)
 plt.grid()
 plt.legend(loc='best')
 plt.xlabel('Degree')
@@ -57,8 +57,19 @@ plt.title('Degree Distribution Of Small-World Networks, N = ' + str(N))
 plt.savefig("NetworkTypes/SmallWorld_Network/Small-World Networks - Degree Distribution.png")
 
 plt.figure()
-plt.loglog(degreeDistribution[0,:], degreeDistribution[1,:], 'o')
+
+array1, array2 = IO.CleanArraysOfZeroValues(degreeDistribution[0, :], degreeDistribution[1, :])
+array1 = np.log(array1)
+array2 = np.log(array2)
+
+plt.plot(array1, array2, 'o', label='Data')
 #plt.loglog(jArray, N * Distribution_Analysis_Functions.DiracDeltaFunction(jArray, popt[0], popt[1]))
+
+plt.legend(loc='best')
+plt.xlabel('Degree')
+plt.ylabel('Number Of Nodes')
+plt.title('Log-Log Degree Distribution Of Small-World Networks, N = ' + str(N))
+plt.savefig("NetworkTypes/SmallWorld_Network/Small-World Networks - LogLog Degree Distribution.png")
 plt.show()
 
 #------------------------------------------------------------------------------------------

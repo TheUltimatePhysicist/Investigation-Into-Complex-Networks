@@ -17,7 +17,7 @@ from SupportingFunctions import Input_Output_Support_Functions as IO
 
 # Initialise the probability and N array.
 probability = 0.50
-N_Array = np.arange(50, 1050, 50)
+N_Array = np.arange(1000, 4050, 50)
 
 
 # Create the adjacency matrices for varying N.

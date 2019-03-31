@@ -21,11 +21,11 @@ def ExpectedClusteringValue(k, p):
 #--------------------------------------------------------------------------------------------------
 #
 # Initialise the probability and N array.
-probability = 0.50
-N_Array = np.arange(50, 1050, 50)
+probability = 0.5
+N_Array = np.arange(1000, 4050, 50)
 
-proportionOfAverageDegree = 20/50
-averageDegree = 5
+#proportionOfAverageDegree = 20/50
+averageDegree = 10
 
 # Compute the clustering coefficient values.
 clusteringCoefficientArray = np.zeros(N_Array.shape[0])
@@ -57,20 +57,21 @@ N_Array, clusteringCoefficientArray = IO.ReadPlottingDataFromTxtFile(fileDestina
 
 # Plot the resulting data.
 plt.figure()
-plt.plot(N_Array, clusteringCoefficientArray, 'o')
+plt.plot(N_Array, clusteringCoefficientArray, 'o', label='Data')
 
 #expectedClusteringValue = ((3*(averageDegree -1)) / (2*((2*averageDegree) - 1))) * ((1 - probability)**3)
 
-plt.plot(N_Array, ExpectedClusteringValue(averageDegree, probability)*(N_Array**0))
+plt.plot(N_Array, ExpectedClusteringValue(averageDegree, probability)*(N_Array**0), label='Line Of Best Fit')
 
-plt.ylim(0, 1)
+plt.ylim(0, 0.5)
+plt.legend(loc='best')
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Clustering Coefficient")
 plt.title("Clustering Coefficients Of Small-World Networks (Varying N)")
 plt.grid()
 plt.savefig('NetworkTypes/SmallWorld_Network/Average Clustering Coefficients Of Small-World Networks(Varying N)')
 
-
+'''
 #--------------------------------------------------------------------------------------------------
 # This section looks at a fixed node number and varying probability, to determine how the
 # clustering coefficient changes over a range of probabilities.
@@ -118,4 +119,4 @@ plt.show()
 # Output the data to a .txt file.
 fileDestination = 'NetworkTypes/SmallWorld_Network/AverageClusteringCoefficients (Varying P).txt'
 IO.WritePlottingDataToTxtFile(fileDestination, "P", P_Array, "Difference", clusteringCoefficientArray)
-
+'''
