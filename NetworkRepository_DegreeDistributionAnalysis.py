@@ -76,16 +76,16 @@ interceptArray = np.zeros(numberOfDatasets)
 interceptErrorsArray = np.zeros(numberOfDatasets)
 
 # 
-for i in range(0, numberOfDatasets):
+for i in range(0, 1):#numberOfDatasets):
     print ('started ' + str(i) + ' out of 24')
 
     fileDestination = 'NetworkRepository_Data/' + datasetDesignation[i] + '/' + datasetDesignation[i] + '_DegreeDistribution.txt'
     degreeArray, numberArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
 
 
-    array1, array2 = IO.CleanArraysOfZeroValues(degreeArray, numberArray)
-    array1 = np.log(array1)
-    array2 = np.log(array2)
+    array1_tt, array2_tt = IO.CleanArraysOfZeroValues(degreeArray, numberArray)
+    array1 = np.log(array1_tt)
+    array2 = np.log(array2_tt)
 
     endPoint = len(array1) - 1 #Distribution_Analysis_Functions.FirstIndexContainingGivenValue(array2, 0)
     '''
@@ -128,12 +128,15 @@ for i in range(0, numberOfDatasets):
     plt.xlim(0, 6)
     plt.plot(array1, array2, 'o')
 
+    #plt.plot(array1, (-2)*array1 + np.log(array2_tt))
+
     #arrayfit1, arrayfit2 = IO.CleanArraysOfZeroValues(newArray, numberOfNodesArray[i] * Distribution_Analysis_Functions.DiracDeltaFunction(newArray, popt[0], popt[1]))
     #arrayfit1 = np.log(arrayfit1)
     #arrayfit2 = np.log(arrayfit2)
     #plt.plot(arrayfit1, arrayfit2)
     #secondDegreeArray = np.linspace(array1[0], array1[-1], 1000)
     #plt.plot(secondDegreeArray, np.log(Distribution_Analysis_Functions.DiracDeltaFunction(secondDegreeArray, popt[0], popt[1])))
+
 
     plt.xlabel("Degree")
     plt.ylabel("Number Of Nodes")
