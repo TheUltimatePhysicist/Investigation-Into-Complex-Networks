@@ -48,7 +48,7 @@ N_Array, meanShortestPathArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
 
 plt.figure()
 plt.grid()
-plt.plot(N_Array, meanShortestPathArray, label = 'Data')
+plt.plot(N_Array, meanShortestPathArray, 'o', label = 'Data')
 
 # Fit a line to the data.
 popt, pcov = curve_fit(
@@ -115,12 +115,12 @@ P_Array, meanShortestPathArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
 
 plt.figure()
 plt.grid()
-plt.plot(P_Array, meanShortestPathArray, label = 'Data')
+plt.plot(P_Array, meanShortestPathArray, 'o', label = 'Data')
 
 #
 popt, pcov = curve_fit(
                         Distribution_Analysis_Functions.StraightLine,
-                        P_Array, meanShortestPathArray,
+                        P_Array[2:], meanShortestPathArray[2:],
                         (-1, 2))
 
 xArray = np.linspace(P_Array[0], P_Array[len(P_Array) - 1], 1000)

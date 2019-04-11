@@ -11,6 +11,10 @@ from SupportingFunctions import Distribution_Analysis_Functions
 from SupportingFunctions import Input_Output_Support_Functions as IO
 
 
+def Gaussian(xArray, height, centre, sigma):
+    return height * np.exp(((xArray - centre)**2)/(-2*(sigma**2)))
+
+
 #------------------------------------------------------------------------------------------
 # This section demonstrates the degree distribution for a small-world network of a given
 # size.
@@ -28,7 +32,7 @@ probability = 0.5
 adjacencyMatrix =  nx.to_numpy_matrix(  nx.watts_strogatz_graph(N, averageDegree, probability)  )
 degreeDistribution = Distribution_Analysis_Functions.DegreeDistributionData(adjacencyMatrix)
 
-fileDestination = 'NetworkTypes/SmallWorld_Network/DegreeDistribution (N = ' + str(N) + ', P0 = ' + str(averageDegree) + ', p = ' + str(probability) + ')'
+fileDestination = 'NetworkTypes/SmallWorld_Network/DegreeDistribution (N = ' + str(N) + ', P0 = ' + str(averageDegree) + ', p = ' + str(probability) + ').txt'
 IO.WritePlottingDataToTxtFile(fileDestination, 'Degree', degreeDistribution[0,:], 'Number Of Nodes', degreeDistribution[1,:])
 
 plt.figure("Small-World Networks - Degree Distribution")
@@ -36,17 +40,24 @@ plt.plot(degreeDistribution[0, :], degreeDistribution[1, :], 'o', label='Data')
 
 
 
+#popt, pcov = curve_fit(
+#                        Distribution_Analysis_Functions.DiracDeltaFunction,
+#                        degreeDistribution[0, :],
+#                        degreeDistribution[1, :],
+#                        (averageDegree, probability))
+
 popt, pcov = curve_fit(
-                        Distribution_Analysis_Functions.DiracDeltaFunction,
+                        Gaussian,
                         degreeDistribution[0, :],
                         degreeDistribution[1, :],
-                        (averageDegree, probability))
+                        (N, averageDegree, averageDegree))
 
 print ('Fitted Number Of Neighboring Nodes = ' + str(popt[0]))
 print ('Fitted Probability = ' + str(popt[1]))
 
 jArray = np.linspace(degreeDistribution[0,0], degreeDistribution[0, -1], 1000)
-plt.plot(jArray - 20, N * Distribution_Analysis_Functions.DiracDeltaFunction(jArray, popt[0], popt[1]), label='Curve Of Best Fit')
+#plt.plot(jArray - 20, N * Distribution_Analysis_Functions.DiracDeltaFunction(jArray, popt[0], popt[1]), label='Curve Of Best Fit')
+plt.plot(jArray, Gaussian(jArray, popt[0], popt[1], popt[2]), label='Curve Of Best Fit')
 
 plt.xlim(0, 200)
 plt.grid()
@@ -58,12 +69,17 @@ plt.savefig("NetworkTypes/SmallWorld_Network/Small-World Networks - Degree Distr
 
 plt.figure()
 
-array1, array2 = IO.CleanArraysOfZeroValues(degreeDistribution[0, :], degreeDistribution[1, :])
-array1 = np.log(array1)
-array2 = np.log(array2)
+array1_1, array2_1 = IO.CleanArraysOfZeroValues(degreeDistribution[0, :], degreeDistribution[1, :])
+array1 = np.log(array1_1)
+array2 = np.log(array2_1)
+
+kArray = np.linspace(array1_1[0], array1_1[-1], 1000)
+arrayC, arrayD = IO.CleanArraysOfZeroValues(kArray, Gaussian(kArray, popt[0], popt[1], popt[2]))
+arrayC = np.log(arrayC)
+arrayD = np.log(arrayD)
 
 plt.plot(array1, array2, 'o', label='Data')
-#plt.loglog(jArray, N * Distribution_Analysis_Functions.DiracDeltaFunction(jArray, popt[0], popt[1]))
+plt.plot(arrayC, arrayD, label='Curve Of Best Fit')
 
 plt.legend(loc='best')
 plt.xlabel('Degree')

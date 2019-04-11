@@ -45,8 +45,18 @@ newDegreeArray = np.linspace(0, N, 1000)
 
 #plt.plot(newDegreeArray, N*Distribution_Analysis_Functions.ExponentialTail(newDegreeArray, popt[0]), label='Best Fit')
 
-print(popt[0])
-print(popt[1])
+
+print('')
+print('----------------------------------------------')
+
+pvar = np.diag(pcov)
+
+print('Gradient = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+print('Gradient = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
+print('----------------------------------------------')
+print('')
+
+
 plt.xlabel('Degree')
 plt.ylabel('Number Of Nodes')
 plt.legend(loc='best')

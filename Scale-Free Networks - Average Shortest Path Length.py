@@ -11,8 +11,11 @@ from SupportingFunctions import Distribution_Analysis_Functions
 from SupportingFunctions import Input_Output_Support_Functions as IO
 
 
+#def ExpectedPathLengthCurve(array, verticalTranslation, scalingFactor):
+#    return (((np.log(array)) / (np.log(np.log(array)))) + verticalTranslation)*scalingFactor
+
 def ExpectedPathLengthCurve(array, verticalTranslation, scalingFactor):
-    return (((np.log(array)) / (np.log(np.log(array)))) + verticalTranslation)*scalingFactor
+    return (((np.log(array)) / (np.log(np.log(array)))))*scalingFactor + verticalTranslation
 
 
 #--------------------------------------------------------------------------------------------------
@@ -63,8 +66,18 @@ popt, pcov = curve_fit(
 
 xArray = np.linspace(N_Array[0], N_Array[-1], 1000)
 plt.plot(xArray, ExpectedPathLengthCurve(xArray, popt[0], popt[1]), label='Curve Of Best Fit')
-print (popt[0])
-#plt.ylim(0, 1)
+
+print('')
+print('----------------------------------------------')
+
+pvar = np.diag(pcov)
+
+print('ScalingFactor = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+print('VerticalTranslation = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
+print('----------------------------------------------')
+print('')
+
+
 plt.legend(loc='best')
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Average Shortest Path Length")

@@ -68,8 +68,17 @@ popt, pcov = curve_fit(
 
 curveArray = np.linspace(N_Array[0], N_Array[len(N_Array)-1], 1000)
 plt.plot(curveArray, ExpectedScaleFreeClusteringCurve(curveArray, popt[0], popt[1]), label='Curve Of Best Fit')
-print (popt[0])
-print (popt[1])
+
+print('')
+print('----------------------------------------------')
+
+pvar = np.diag(pcov)
+
+print('ScalingFactor = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+print('GammaConstant = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
+print('----------------------------------------------')
+print('')
+
 
 #plt.ylim(0, 0.5)
 plt.legend(loc='best')
