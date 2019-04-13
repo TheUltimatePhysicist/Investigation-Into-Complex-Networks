@@ -14,6 +14,8 @@ from SupportingFunctions import Input_Output_Support_Functions as IO
 def ExpectedClusteringValue(k, p):
     return ((3*(k - 1)) / (2*((2*k) - 1))) * ((1 - p)**3)
 
+def FlatLine(xArray, height):
+    return (xArray**0)*height
 
 #--------------------------------------------------------------------------------------------------
 # This section looks at a fixed probability value and varying node number, to determine how the
@@ -26,7 +28,7 @@ N_Array = np.arange(1000, 4050, 50)
 
 #proportionOfAverageDegree = 20/50
 averageDegree = 10
-
+'''
 # Compute the clustering coefficient values.
 clusteringCoefficientArray = np.zeros(N_Array.shape[0])
 
@@ -45,12 +47,13 @@ for i in range(0, N_Array.shape[0]):
         summation += nx.average_clustering(smallWorlds_G)
     
     clusteringCoefficientArray[i] = summation / numberOfRepeats
+    print(N_Array[i])
 
 
 # Output the data to a .txt file.
 fileDestination = 'NetworkTypes/SmallWorld_Network/AverageClusteringCoefficients (Varying N).txt'
 IO.WritePlottingDataToTxtFile(fileDestination, "N", N_Array, "Difference", clusteringCoefficientArray)
-
+'''
 
 fileDestination = 'NetworkTypes/SmallWorld_Network/AverageClusteringCoefficients (Varying N).txt'
 N_Array, clusteringCoefficientArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
@@ -58,12 +61,29 @@ N_Array, clusteringCoefficientArray = IO.ReadPlottingDataFromTxtFile(fileDestina
 # Plot the resulting data.
 plt.figure()
 plt.plot(N_Array, clusteringCoefficientArray, 'o', label='Data')
+plt.plot(N_Array, ExpectedClusteringValue(averageDegree, probability)*(N_Array**0), label='Expected Line')
 
-#expectedClusteringValue = ((3*(averageDegree -1)) / (2*((2*averageDegree) - 1))) * ((1 - probability)**3)
 
-plt.plot(N_Array, ExpectedClusteringValue(averageDegree, probability)*(N_Array**0), label='Line Of Best Fit')
+popt, pcov = curve_fit(
+                    FlatLine,
+                    N_Array, clusteringCoefficientArray,
+                    (0.1))
 
-plt.ylim(0, 0.5)
+xArray = np.linspace(N_Array[0], N_Array[-1], 1000)
+plt.plot(xArray, FlatLine(xArray, popt[0]), c='tab:red', label='Flat Line Of Best Fit')
+
+print('')
+print('----------------------------------------------')
+
+pvar = np.diag(pcov)
+
+print('Expected Intercept = ' + str(ExpectedClusteringValue(averageDegree, probability)))
+print('Intercept = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+#print('Intercept = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
+print('----------------------------------------------')
+print('')
+
+plt.ylim(0, 0.25)
 plt.legend(loc='best')
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Clustering Coefficient")
