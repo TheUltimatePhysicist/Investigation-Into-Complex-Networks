@@ -137,17 +137,18 @@ plt.title("Average Shortest Path Length Of Social Media Networks (Varying N)")
 plt.savefig("NetworkRepository_Data/Average Shortest Path Length Of Social Media Networks (Varying N)")
 plt.close()
 
-'''
+
 print('')
 print('----------------------------------------------')
 
 pvar = np.diag(pcov)
 
-print('Gradient = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
-print('Intercept = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
+print('ScalingFactor = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+#print('Gradient = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+#print('Intercept = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
 print('----------------------------------------------')
 print('')
-'''
+
 
 differences = meanShortestPathLengths - Distribution_Analysis_Functions.LogCurve(numberArray, popt[0])
 sum = 0

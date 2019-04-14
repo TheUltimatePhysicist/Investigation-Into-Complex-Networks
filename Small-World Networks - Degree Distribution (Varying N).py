@@ -89,7 +89,7 @@ plt.show()
 #------------------------------------------------------------------------------------------
 # This section produces a fit for various small-world networks (changing N).
 #------------------------------------------------------------------------------------------
-
+'''
 averageDegree = 10
 probability = 0.5
 
@@ -119,59 +119,120 @@ for i in range(len(N_Array)):
     heightArrayErrors[i] = np.sqrt(pvar[0])
     centreArray[i] = popt[1]
     centreArrayErrors[i] = np.sqrt(pvar[1])
-    STD_Array[i] = popt[2]
+    STD_Array[i] = np.sqrt((popt[2])**2)
     STD_ArrayErrors[i] = np.sqrt(pvar[2])
     print (N_Array[i])
-
+'''
 
 fileDestination = 'NetworkTypes/SmallWorld_Network/DegreeDistribution (Varying N) - Height.txt'
-IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'Height Of Peak', heightArray)
+#IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'Height Of Peak', heightArray)
+N_Array, heightArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
 fileDestination = 'NetworkTypes/SmallWorld_Network/DegreeDistribution (Varying N) - Height Errors.txt'
-IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'Height Of Peak Errors', heightArrayErrors)
+#IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'Height Of Peak Errors', heightArrayErrors)
+N_Array, heightArrayErrors = IO.ReadPlottingDataFromTxtFile(fileDestination)
 
 fileDestination = 'NetworkTypes/SmallWorld_Network/DegreeDistribution (Varying N) - Centre.txt'
-IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'Centre Of Peak', centreArray)
+#IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'Centre Of Peak', centreArray)
+N_Array, centreArray = IO.ReadPlottingDataFromTxtFile(fileDestination)
 fileDestination = 'NetworkTypes/SmallWorld_Network/DegreeDistribution (Varying N) - Centre Errors.txt'
-IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'Centre Of Peak Errors', centreArrayErrors)
+#IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'Centre Of Peak Errors', centreArrayErrors)
+N_Array, centreArrayErrors = IO.ReadPlottingDataFromTxtFile(fileDestination)
 
 fileDestination = 'NetworkTypes/SmallWorld_Network/DegreeDistribution (Varying N) - STD.txt'
-IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'STD Of Peak', STD_Array)
+#IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'STD Of Peak', STD_Array)
+N_Array, STD_Array = IO.ReadPlottingDataFromTxtFile(fileDestination)
 fileDestination = 'NetworkTypes/SmallWorld_Network/DegreeDistribution (Varying N) - STD Errors.txt'
-IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'STD Of Peak Errors', STD_ArrayErrors)
+#IO.WritePlottingDataToTxtFile(fileDestination, 'N', N_Array, 'STD Of Peak Errors', STD_ArrayErrors)
+N_Array, STD_ArrayErrors = IO.ReadPlottingDataFromTxtFile(fileDestination)
 
 
-plt.figure("Small-World Networks - Degree Distribution (Varying N - Height)")
-#plt.plot(N_Array, heightArray, 'o', label='Data')
+plt.figure("Small-World Degree Distribution (Varying N - Height)")
 plt.errorbar(N_Array, heightArray, yerr = heightArrayErrors/2, fmt = 'o', label='Data')
+
+popt, pcov = curve_fit(
+                    Distribution_Analysis_Functions.StraightLine,
+                    N_Array, heightArray,
+                    (50, 0))
+xValues = np.linspace(N_Array[0], N_Array[-1], 1000)
+plt.plot(xValues, Distribution_Analysis_Functions.StraightLine(xValues, popt[0], popt[1]), label='Line Of Best Fit')
+
+print('')
+print('----------------------------------------------')
+
+pvar = np.diag(pcov)
+
+print('Gradient Of Varying N (Height) = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+print('Intercept Of Varying N (Height) = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
+print('----------------------------------------------')
+
 plt.grid()
 plt.legend(loc='best')
 plt.xlabel('Number Of Nodes')
 plt.ylabel('Height Of Peak')
-plt.title('Degree Distribution Gaussian Fitting Of Small-World Networks (Varying N - Height Of Peak)')
+plt.title('Gaussian Fitting Of Small-World Networks (Varying N - Height Of Peak)')
 plt.savefig("NetworkTypes/SmallWorld_Network/Small-World Networks - Degree Distribution (Varying N - Height).png")
 plt.show()
 
-plt.figure("Small-World Networks - Degree Distribution (Varying N - Centre)")
+
+plt.figure("Small-World Degree Distribution (Varying N - Centre)")
+plt.ylim(9, 11)
 #plt.plot(N_Array, centreArray, 'o', label='Data')
 plt.errorbar(N_Array, centreArray, yerr = centreArrayErrors/2, fmt = 'o', label='Data')
+
+popt, pcov = curve_fit(
+                    Distribution_Analysis_Functions.StraightLine,
+                    N_Array, centreArray,
+                    (50, 0))
+xValues = np.linspace(N_Array[0], N_Array[-1], 1000)
+plt.plot(xValues, Distribution_Analysis_Functions.StraightLine(xValues, popt[0], popt[1]), label='Line Of Best Fit')
+
+print('')
+print('----------------------------------------------')
+
+pvar = np.diag(pcov)
+
+print('Gradient Of Varying N (Centre) = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+print('Intercept Of Varying N (Centre) = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
+print('----------------------------------------------')
+
 plt.grid()
 plt.legend(loc='best')
 plt.xlabel('Number Of Nodes')
 plt.ylabel('Centre Of Peak')
-plt.title('Degree Distribution Gaussian Fitting Of Small-World Networks (Varying N - Centre Of Peak)')
+plt.title('Gaussian Fitting Of Small-World Networks (Varying N - Centre Of Peak)')
 plt.savefig("NetworkTypes/SmallWorld_Network/Small-World Networks - Degree Distribution (Varying N - Centre).png")
 plt.show()
 
-plt.figure("Small-World Networks - Degree Distribution (Varying N - STD)")
+
+
+
+plt.figure("Small-World Degree Distribution (Varying N - STD)")
+plt.ylim(1.25, 2.75)
 #plt.plot(N_Array, centreArray, 'o', label='Data')
 plt.errorbar(N_Array, STD_Array, yerr = STD_ArrayErrors/2, fmt = 'o', label='Data')
+
+popt, pcov = curve_fit(
+                    Distribution_Analysis_Functions.StraightLine,
+                    N_Array, STD_Array,
+                    (50, 0))
+xValues = np.linspace(N_Array[0], N_Array[-1], 1000)
+plt.plot(xValues, Distribution_Analysis_Functions.StraightLine(xValues, popt[0], popt[1]), label='Line Of Best Fit')
+
+print('')
+print('----------------------------------------------')
+
+pvar = np.diag(pcov)
+
+print('Gradient Of Varying N (STD) = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
+print('Intercept Of Varying N (STD) = ' + str(popt[1]) + ' +/- ' + str(np.sqrt(pvar[1])))
+print('----------------------------------------------')
+
 plt.grid()
 plt.legend(loc='best')
 plt.xlabel('Number Of Nodes')
-plt.ylabel('Centre Of Peak')
-plt.title('Degree Distribution Gaussian Fitting Of Small-World Networks (Varying N - STD)')
+plt.ylabel('STD Of Peak')
+plt.title('Gaussian Fitting Of Small-World Networks (Varying N - STD)')
 plt.savefig("NetworkTypes/SmallWorld_Network/Small-World Networks - Degree Distribution (Varying N - STD).png")
 plt.show()
-
 
 

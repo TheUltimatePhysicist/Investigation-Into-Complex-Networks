@@ -10,9 +10,6 @@ from SupportingFunctions import Distribution_Analysis_Functions
 from SupportingFunctions import Input_Output_Support_Functions as IO
 
 
-def FlatLine(xArray, yVal):
-    return (xArray*0 + yVal)
-
 #------------------------------------------------------------------------------------------
 # Important Arrays.
 #------------------------------------------------------------------------------------------
@@ -92,7 +89,7 @@ plt.figure()
 plt.grid()
 plt.plot(numberOfNodesArray, averageClusteringCoefficients, 'o', label='Data')
 
-'''
+
 # Fit a straight line to the data.
 estimateGradient = 0
 estimateIntercept = 0.3
@@ -104,37 +101,34 @@ popt, pcov = curve_fit(
                     (estimateGradient, estimateIntercept))
 xArray = np.linspace(numberOfNodesArray[0], numberOfNodesArray[len(numberOfNodesArray) - 1], 1000)
 #plt.plot(xArray, Distribution_Analysis_Functions.StraightLine(xArray, popt[0], popt[1]), label = 'WS Line Of Best Fit')
-'''
+
 def ExpectedScaleFreeClusteringCurve(xArray, constant, scalingFactor):
-    return scalingFactor*(xArray**(-1*constant))
+    return scalingFactor*(xArray**(constant))
 
-numberArray_temp, clusteringArray_temp = IO.CleanRepeatedValuesOfNetworkRepData(numberOfNodesArray, averageClusteringCoefficients)
-xArray = np.linspace(numberOfNodesArray[0], numberOfNodesArray[len(numberOfNodesArray) - 1], 1000)
-
-popt, pcov = curve_fit(
-                    FlatLine,
+popt_BA, pcov_BA = curve_fit(
+                    ExpectedScaleFreeClusteringCurve,
                     numberArray_temp, clusteringArray_temp,
-                    0.1)
+                    (1, 1))
 
-plt.plot(xArray, FlatLine(xArray, popt[0]), label='WS Curve Of Best Fit')
+plt.plot(xArray, ExpectedScaleFreeClusteringCurve(xArray, popt_BA[0], popt_BA[1]), c='g', label='BA Curve Of Best Fit')
 
 plt.ylim(0, 1)
 plt.legend(loc='best')
 plt.xlabel("Number Of Nodes")
 plt.ylabel("Average Clustering Coefficient")
 plt.title("Average Clustering Coefficients Of Social Media Networks (Varying N)")
-plt.savefig("NetworkRepository_Data/Average Clustering Coefficients Of Social Media Networks (Varying N)")
+plt.savefig("NetworkRepository_Data/Average Clustering Coefficients Of Social Media Networks (Varying N - BA Fit)")
 plt.close()
 
 print('')
 print('----------------------------------------------')
 
-pvar = np.diag(pcov)
+pvar_BA = np.diag(pcov_BA)
 
-print('Gamma = ' + str(popt[0]) + ' +/- ' + str(np.sqrt(pvar[0])))
-#print('Scaling Factor = ' + str(popt_BA[1]) + ' +/- ' + str(np.sqrt(pvar_BA[1])))
+print('Gamma = ' + str(popt_BA[0]) + ' +/- ' + str(np.sqrt(pvar_BA[0])))
+print('Scaling Factor = ' + str(popt_BA[1]) + ' +/- ' + str(np.sqrt(pvar_BA[1])))
 
-differences = clusteringArray_temp - FlatLine(numberArray_temp, popt[0])
+differences = clusteringArray_temp - ExpectedScaleFreeClusteringCurve(numberArray_temp, popt_BA[0], popt_BA[1])
 sum = 0
 for i in range(len(clusteringArray_temp)):
     sum += (differences[i])**2
